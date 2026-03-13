@@ -63,7 +63,10 @@ async function main() {
   for (const svc of serviceDefs) {
     await prisma.service.create({
       data: { ...svc, professionalId: professional.id }
-    }).catch(() => {}); // ignore duplicate
+    }).catch((e) => {
+      // Ignore unique constraint violations (duplicate services on re-seed)
+      if (e.code !== 'P2002') throw e;
+    });
   }
 
   // Log available presets (stored in service config, not DB)

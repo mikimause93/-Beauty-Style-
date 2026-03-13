@@ -6,10 +6,15 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   ai-style-service:
     name: AI Style Service – Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -34,6 +39,8 @@ jobs:
     name: Docker Build – AI Style Service
     runs-on: ubuntu-latest
     needs: ai-style-service
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code

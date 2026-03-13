@@ -48,8 +48,9 @@ function verifyJWT(token, secret) {
     const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
     if (data.exp && data.exp < Math.floor(Date.now() / 1000)) return null;
 
-    // Normalise userId field
-    data.userId = data.userId || data.sub || data.id;
+    // Normalise to userId. The platform standard is the 'sub' claim (JWT subject)
+    // which maps to the User.id from Prisma. Legacy tokens may use 'userId' or 'id'.
+    data.userId = data.sub || data.userId || data.id;
     return data;
   } catch {
     return null;

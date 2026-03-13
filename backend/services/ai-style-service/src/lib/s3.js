@@ -32,6 +32,9 @@ async function uploadBuffer(buffer, key, contentType = 'image/jpeg') {
       Key: key,
       Body: buffer,
       ContentType: contentType,
+      // NOTE: 'public-read' makes objects publicly accessible via URL.
+      // For production deployments, remove ACL and use pre-signed URLs for
+      // temporary, authenticated access to user-uploaded content.
       ACL: 'public-read'
     }
   });

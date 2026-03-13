@@ -31,6 +31,7 @@ interface Preset {
 // Constants
 // ---------------------------------------------------------------------------
 const API_URL = process.env.EXPO_PUBLIC_API_URL || '';
+const POLL_INTERVAL_MS = 3000;
 
 const PRESETS: Preset[] = [
   { key: 'bob-short', label: 'Bob Corto', emoji: '✂️' },
@@ -110,7 +111,8 @@ export default function AILookScreen() {
         uri: asset.uri,
         name: 'photo.jpg',
         type: 'image/jpeg',
-      } as never);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
 
       const res = await axios.post(`${API_URL}/api/ai-look/upload`, form, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -165,7 +167,7 @@ export default function AILookScreen() {
       } catch (err) {
         console.error('Poll error', err);
       }
-    }, 3000);
+    }, POLL_INTERVAL_MS);
   };
 
   const saveLook = async () => {

@@ -1,6 +1,8 @@
 const express = require('express');
 const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const { Queue } = require('bullmq');
+const rateLimit = require('express-rate-limit');
 const S3 = require('../lib/s3');
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/auth');
@@ -25,6 +27,31 @@ const redisConnection = {
 
 const queue = new Queue('ai-style', redisConnection);
 
+// Rate limiters
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'too_many_requests', message: 'Too many upload requests, please try again later.' }
+});
+
+const generateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'too_many_requests', message: 'Generation limit reached, please try again later.' }
+});
+
+const readLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'too_many_requests', message: 'Too many requests, please try again later.' }
+});
+
 const router = express.Router();
 
 /**
@@ -33,7 +60,7 @@ const router = express.Router();
  * Requires: multipart/form-data with field 'photo'
  * Returns: { id, originalUrl }
  */
-router.post('/upload', requireAuth, upload.single('photo'), async (req, res, next) => {
+router.post('/upload', uploadLimiter, requireAuth, upload.single('photo'), async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'no_file', message: 'No photo file provided' });
@@ -45,7 +72,8 @@ router.post('/upload', requireAuth, upload.single('photo'), async (req, res, nex
       return res.status(422).json({ error: 'nsfw_rejected', message: 'Image rejected by content moderation' });
     }
 
-    const key = `originals/${Date.now()}-${req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const safeFilename = req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const key = `originals/${uuidv4()}-${safeFilename}`;
     const originalUrl = await S3.uploadBuffer(req.file.buffer, key, req.file.mimetype);
 
     const record = db.createLook({
@@ -69,7 +97,7 @@ router.post('/upload', requireAuth, upload.single('photo'), async (req, res, nex
  * Body: { id, preset, params?, provider? }
  * Returns: { status: 'queued', id }
  */
-router.post('/generate', requireAuth, async (req, res, next) => {
+router.post('/generate', generateLimiter, requireAuth, async (req, res, next) => {
   try {
     const { id, preset, params = {}, provider = 'replicate' } = req.body;
     if (!id || !preset) {
@@ -105,7 +133,7 @@ router.post('/generate', requireAuth, async (req, res, next) => {
  * Poll the processing status of a GeneratedLook job.
  * Returns: { id, status, resultUrls }
  */
-router.get('/status/:id', requireAuth, async (req, res, next) => {
+router.get('/status/:id', readLimiter, requireAuth, async (req, res, next) => {
   try {
     const look = db.getLook(req.params.id);
     if (!look) {
@@ -127,7 +155,7 @@ router.get('/status/:id', requireAuth, async (req, res, next) => {
  * Retrieve the final result URLs for a look.
  * Returns: { id, resultUrls, provider }
  */
-router.get('/result/:id', requireAuth, async (req, res, next) => {
+router.get('/result/:id', readLimiter, requireAuth, async (req, res, next) => {
   try {
     const look = db.getLook(req.params.id);
     if (!look) {
@@ -149,7 +177,7 @@ router.get('/result/:id', requireAuth, async (req, res, next) => {
  * Body: { id }
  * Returns: { status: 'saved', id }
  */
-router.post('/save', requireAuth, async (req, res, next) => {
+router.post('/save', readLimiter, requireAuth, async (req, res, next) => {
   try {
     const { id } = req.body;
     if (!id) {
@@ -177,7 +205,7 @@ router.post('/save', requireAuth, async (req, res, next) => {
  * Body: { lookId, professionalId, serviceId, date, startTime, totalPrice }
  * Returns: booking object
  */
-router.post('/book', requireAuth, async (req, res, next) => {
+router.post('/book', readLimiter, requireAuth, async (req, res, next) => {
   try {
     const { lookId, professionalId, serviceId, date, startTime, totalPrice } = req.body;
     if (!lookId || !professionalId || !date || !startTime) {

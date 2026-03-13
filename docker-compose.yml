@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: stayle
-      POSTGRES_PASSWORD: stayle_2026
-      POSTGRES_DB: stayle_beauty
+      POSTGRES_USER: ${POSTGRES_USER:-stayle}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-stayle_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-stayle_beauty}
     ports:
       - '5432:5432'
     volumes:

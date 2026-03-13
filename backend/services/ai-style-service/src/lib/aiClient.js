@@ -1,6 +1,20 @@
 const axios = require('axios');
 const { Buffer } = require('buffer');
 
+// ---------------------------------------------------------------------------
+// Default Replicate model version. Override via REPLICATE_MODEL_VERSION env var.
+// ---------------------------------------------------------------------------
+const DEFAULT_REPLICATE_VERSION =
+  process.env.REPLICATE_MODEL_VERSION ||
+  'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b';
+
+// ---------------------------------------------------------------------------
+// Stability AI base URL. Override via STABILITY_API_BASE env var.
+// ---------------------------------------------------------------------------
+const STABILITY_API_BASE =
+  process.env.STABILITY_API_BASE ||
+  'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0';
+
 /**
  * AI provider wrapper.
  * Primary: Replicate
@@ -55,7 +69,7 @@ async function callReplicate({ imageUrl, preset, params }) {
   const token = process.env.REPLICATE_API_TOKEN;
   if (!token) throw new Error('REPLICATE_API_TOKEN not configured');
 
-  const version = params.version || 'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b';
+  const version = params.version || DEFAULT_REPLICATE_VERSION;
 
   const body = {
     version,
@@ -129,7 +143,7 @@ async function callStability({ imageUrl, preset, params }) {
   form.append('image_strength', String(params.strength ?? 0.35));
 
   const res = await axios.post(
-    'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image',
+    `${STABILITY_API_BASE}/image-to-image`,
     form,
     {
       headers: {
