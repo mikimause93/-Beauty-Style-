@@ -83,7 +83,7 @@ write_file "backend/services/ai-style-service/package.json" <<'CONTENT'
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "ioredis": "^5.3.2",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^2.1.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
