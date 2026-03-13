@@ -1,0 +1,261 @@
+// Beauty & Style Platform - Prisma Schema
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  phone           String?
+  fullName        String
+  avatarUrl       String?
+  role            UserRole  @default(CLIENT)
+  fcmToken        String?
+  apnsToken       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  bookings        Booking[]
+  generatedLooks  GeneratedLook[]
+  notifications   Notification[]
+  sentMessages    Message[]         @relation("SentMessages")
+  wallet          Wallet?
+  likes           Like[]
+  comments        Comment[]
+  applause        Applause[]
+}
+
+enum UserRole {
+  CLIENT
+  PROFESSIONAL
+  ADMIN
+}
+
+// ─── Professional Profile ──────────────────────────────────────────────────────
+
+model Professional {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  bio         String?
+  specialties String[]
+  rating      Float     @default(0)
+  location    Json?     // { lat, lng, address }
+  whatsapp    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  bookings    Booking[]
+}
+
+// ─── AI Generated Look ────────────────────────────────────────────────────────
+
+model GeneratedLook {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  jobId        String   @unique
+  resultUrl    String
+  resultUrls   String   @default("[]") // JSON array of URLs
+  preset       String   @default("natural")
+  metadata     String   @default("{}") // JSON
+  status       LookStatus @default(pending)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings     Booking[]
+}
+
+enum LookStatus {
+  pending
+  processing
+  completed
+  failed
+  saved
+}
+
+// ─── Booking ──────────────────────────────────────────────────────────────────
+
+model Booking {
+  id               String         @id @default(cuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  professionalId   String
+  professional     Professional   @relation(fields: [professionalId], references: [id])
+  generatedLookId  String?
+  generatedLook    GeneratedLook? @relation(fields: [generatedLookId], references: [id])
+  scheduledAt      DateTime
+  notes            String?
+  status           BookingStatus  @default(pending)
+  stripePaymentIntentId String?
+  stripeClientSecret    String?
+  amount           Float?
+  currency         String         @default("EUR")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum BookingStatus {
+  pending
+  payment_pending
+  confirmed
+  completed
+  cancelled
+  refunded
+}
+
+// ─── Wallet / Bank Account ───────────────────────────────────────────────────
+
+model Wallet {
+  id          String        @id @default(cuid())
+  userId      String        @unique
+  user        User          @relation(fields: [userId], references: [id])
+  balance     Float         @default(0)
+  currency    String        @default("EUR")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  bankAccounts BankAccount[]
+}
+
+model BankAccount {
+  id          String    @id @default(cuid())
+  walletId    String
+  wallet      Wallet    @relation(fields: [walletId], references: [id])
+  iban        String
+  bic         String?
+  accountName String
+  isDefault   Boolean   @default(false)
+  verified    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+// ─── Notification ─────────────────────────────────────────────────────────────
+
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  type        NotificationType
+  targetId    String?
+  targetType  String?
+  actorId     String?
+  deepLink    String?
+  payload     String           @default("{}") // JSON
+  read        Boolean          @default(false)
+  sentAt      DateTime?
+  createdAt   DateTime         @default(now())
+}
+
+enum NotificationType {
+  AI_LOOK_READY
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  NEW_MESSAGE
+  NEW_COMMENT
+  NEW_LIKE
+  NEW_APPLAUSE
+  SYSTEM
+}
+
+// ─── Post / Comment / Like / Applause ────────────────────────────────────────
+
+model Post {
+  id          String    @id @default(cuid())
+  userId      String
+  caption     String?
+  imageUrl    String?
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  comments    Comment[]
+  likes       Like[]
+  applause    Applause[]
+}
+
+model Comment {
+  id          String    @id @default(cuid())
+  postId      String
+  post        Post      @relation(fields: [postId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  parentId    String?
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+  content     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Like {
+  id          String    @id @default(cuid())
+  postId      String
+  post        Post      @relation(fields: [postId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([postId, userId])
+}
+
+model Applause {
+  id          String    @id @default(cuid())
+  postId      String
+  post        Post      @relation(fields: [postId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  count       Int       @default(1)
+  createdAt   DateTime  @default(now())
+
+  @@unique([postId, userId])
+}
+
+// ─── Message (Chat) ───────────────────────────────────────────────────────────
+
+model Message {
+  id              String      @id @default(cuid())
+  conversationId  String
+  senderId        String
+  sender          User        @relation("SentMessages", fields: [senderId], references: [id])
+  content         String?
+  mediaUrl        String?
+  messageType     MessageType @default(TEXT)
+  translatedContent String?
+  originalLang    String?
+  targetLang      String?
+  readAt          DateTime?
+  createdAt       DateTime    @default(now())
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VOICE
+  VIDEO
+  SYSTEM
+}
+
+// ─── Style Preset ─────────────────────────────────────────────────────────────
+
+model StylePreset {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  label       String
+  description String?
+  previewUrl  String?
+  prompt      String
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+}

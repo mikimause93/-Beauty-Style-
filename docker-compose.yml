@@ -1,0 +1,158 @@
+version: '3.9'
+
+services:
+  # ─── Infrastructure ──────────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: beauty-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-beauty}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-beautypassword}
+      POSTGRES_DB: ${POSTGRES_DB:-beautydb}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-beauty}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: beauty-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7
+    container_name: beauty-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Backend Services ─────────────────────────────────────────────────────────
+
+  ai-style-service:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    container_name: ai-style-service
+    restart: unless-stopped
+    ports:
+      - '4005:4005'
+    environment:
+      - PORT=4005
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-beauty}:${POSTGRES_PASSWORD:-beautypassword}@postgres:5432/${POSTGRES_DB:-beautydb}
+      - REDIS_URL=redis://redis:6379
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_KEY=${S3_KEY}
+      - S3_SECRET=${S3_SECRET}
+      - S3_REGION=${S3_REGION:-us-east-1}
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4003
+      - NSFW_THRESHOLD=${NSFW_THRESHOLD:-0.5}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  ai-style-worker:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    container_name: ai-style-worker
+    restart: unless-stopped
+    command: node src/workers/aiWorker.js
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-beauty}:${POSTGRES_PASSWORD:-beautypassword}@postgres:5432/${POSTGRES_DB:-beautydb}
+      - REDIS_URL=redis://redis:6379
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_KEY=${S3_KEY}
+      - S3_SECRET=${S3_SECRET}
+      - S3_REGION=${S3_REGION:-us-east-1}
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4003
+      - WORKER_CONCURRENCY=${WORKER_CONCURRENCY:-3}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  notification-service:
+    build:
+      context: ./backend/services/notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    restart: unless-stopped
+    ports:
+      - '4003:4003'
+    environment:
+      - PORT=4003
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-beauty}:${POSTGRES_PASSWORD:-beautypassword}@postgres:5432/${POSTGRES_DB:-beautydb}
+      - FIREBASE_SERVICE_ACCOUNT=${FIREBASE_SERVICE_ACCOUNT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  booking-service:
+    build:
+      context: ./backend/services/booking-service
+      dockerfile: Dockerfile
+    container_name: booking-service
+    restart: unless-stopped
+    ports:
+      - '4002:4002'
+    environment:
+      - PORT=4002
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-beauty}:${POSTGRES_PASSWORD:-beautypassword}@postgres:5432/${POSTGRES_DB:-beautydb}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4003
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  chat-service:
+    build:
+      context: ./backend/services/chat-service
+      dockerfile: Dockerfile
+    container_name: chat-service
+    restart: unless-stopped
+    ports:
+      - '4004:4004'
+    environment:
+      - PORT=4004
+      - MONGO_URL=mongodb://mongodb:27017/beauty-chat
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-beauty}:${POSTGRES_PASSWORD:-beautypassword}@postgres:5432/${POSTGRES_DB:-beautydb}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NOTIFICATION_SERVICE_URL=http://notification-service:4003
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  mongo_data:
