@@ -1,0 +1,51 @@
+Title: feature/ai-look: add AI Look microservice, Prisma schema, mobile UI, Docker & docs
+
+## Description
+
+This PR adds the complete AI Look (Virtual Style) feature to the Stayle Beauty platform.
+
+### What's included
+
+| Area | Changes |
+|------|---------|
+| Backend | New `backend/services/ai-style-service` microservice with REST API + BullMQ worker |
+| Prisma | `GeneratedLook` model + `generatedLookId` field on `Booking` (see `schema_additions.prisma`) |
+| Mobile | New screen `mobile/app/(tabs)/ai-look.tsx` (Expo / React Native) |
+| Infrastructure | `docker-compose.ai-style.yml` with service + worker containers |
+| Config | `.env.example` updated with all required variables |
+| Docs | `docs/ai-look.md` — full developer guide |
+
+---
+
+## GitHub Secrets to configure
+
+Go to **Settings → Secrets and variables → Actions** and add:
+
+- `REPLICATE_API_TOKEN`
+- `STABILITY_API_KEY` (optional fallback)
+- `OPENAI_API_KEY` (optional fallback)
+- `S3_BUCKET`, `S3_KEY`, `S3_SECRET`, `S3_REGION`
+- `S3_ENDPOINT` (optional, for DO Spaces / MinIO)
+- `REDIS_HOST`, `REDIS_PORT`
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+- `FIREBASE_SERVER_KEY`
+
+⚠️ Never commit real secret values to the repository.
+
+---
+
+## Testing checklist
+
+- [ ] `cp .env.example .env` and fill real values
+- [ ] `docker-compose up -d postgres mongodb redis`
+- [ ] `docker-compose -f docker-compose.ai-style.yml up --build -d`
+- [ ] `npx prisma migrate dev --name add_generated_look`
+- [ ] `node backend/shared/prisma/seed.js`
+- [ ] `POST /api/ai-look/upload` with image → `{ id, originalUrl }`
+- [ ] `POST /api/ai-look/generate` with `id` + `preset` → `{ status: 'queued' }`
+- [ ] Worker processes job → `GET /api/ai-look/status/:id` returns `resultUrls`
+- [ ] `POST /api/ai-look/save` marks record as saved
+- [ ] `POST /api/ai-look/book` creates Booking linked to look
+- [ ] Mobile screen: photo pick → preset select → results displayed → "Prenota"

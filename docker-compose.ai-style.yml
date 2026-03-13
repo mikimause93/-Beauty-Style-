@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+  ai-style-service:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3011:3011'
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3011/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ai-style-worker:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: node src/worker.js
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+      - ai-style-service
+
+volumes:
+  redis_data:
