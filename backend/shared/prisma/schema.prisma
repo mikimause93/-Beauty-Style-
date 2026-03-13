@@ -1,0 +1,132 @@
+# Prisma Schema – Beauty & Style Platform
+
+# This is your Prisma schema file,
+# learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users & Profiles ────────────────────────────────────────────────────────
+
+model User {
+  id             String         @id @default(cuid())
+  email          String         @unique
+  name           String?
+  avatarUrl      String?
+  role           UserRole       @default(CLIENT)
+  passwordHash   String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  professional   Professional?
+  bookings       Booking[]      @relation("ClientBookings")
+  generatedLooks GeneratedLook[]
+  notifications  Notification[]
+
+  @@index([email])
+}
+
+enum UserRole {
+  CLIENT
+  PROFESSIONAL
+  ADMIN
+}
+
+model Professional {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName String?
+  bio          String?
+  lat          Float?
+  lng          Float?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  bookings     Booking[] @relation("ProfessionalBookings")
+  services     Service[]
+}
+
+model Service {
+  id             String       @id @default(cuid())
+  professionalId String
+  professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  name           String
+  durationMin    Int
+  price          Float
+  createdAt      DateTime     @default(now())
+}
+
+// ─── Bookings ────────────────────────────────────────────────────────────────
+
+model Booking {
+  id               String        @id @default(cuid())
+  clientId         String
+  client           User          @relation("ClientBookings", fields: [clientId], references: [id])
+  professionalId   String
+  professional     Professional  @relation("ProfessionalBookings", fields: [professionalId], references: [id])
+  date             DateTime
+  startTime        String
+  status           BookingStatus @default(PENDING)
+  totalPrice       Float         @default(0)
+  stripePaymentId  String?
+  generatedLookId  String?
+  generatedLook    GeneratedLook? @relation(fields: [generatedLookId], references: [id])
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([clientId])
+  @@index([professionalId])
+  @@index([date])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+// ─── AI Look / Virtual Style ─────────────────────────────────────────────────
+
+model GeneratedLook {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalUrl  String
+  resultUrls   String[]  @default([])
+  preset       String?
+  params       Json?
+  provider     String?
+  costCredits  Float     @default(0)
+  saved        Boolean   @default(false)
+  bookingId    String?   @unique
+  booking      Booking?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  targetId    String?
+  targetType  String?
+  actorId     String?
+  read        Boolean  @default(false)
+  sentPush    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
