@@ -1,0 +1,185 @@
+name: CI — Beauty & Style Platform
+
+on:
+  push:
+    branches: [main, 'feature/**', 'feat/**']
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # ─── AI Style Service ────────────────────────────────────────────────────────
+  ai-style-service:
+    name: AI Style Service — Test & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/services/ai-style-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/services/ai-style-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://beauty:beauty@localhost:5432/beautydb_test
+          REDIS_URL: redis://localhost:6379
+          S3_BUCKET: test-bucket
+          S3_KEY: test-key
+          S3_SECRET: test-secret
+          S3_REGION: us-east-1
+          REPLICATE_API_TOKEN: test-token
+          STABILITY_API_KEY: test-key
+          OPENAI_API_KEY: test-key
+
+      - name: Build Docker image
+        run: docker build -t ai-style-service:ci .
+
+  # ─── Notification Service ────────────────────────────────────────────────────
+  notification-service:
+    name: Notification Service — Test & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/services/notification-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/services/notification-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://beauty:beauty@localhost:5432/beautydb_test
+
+      - name: Build Docker image
+        run: docker build -t notification-service:ci .
+
+  # ─── Booking Service ─────────────────────────────────────────────────────────
+  booking-service:
+    name: Booking Service — Test & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/services/booking-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/services/booking-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://beauty:beauty@localhost:5432/beautydb_test
+          STRIPE_SECRET_KEY: sk_test_placeholder
+
+      - name: Build Docker image
+        run: docker build -t booking-service:ci .
+
+  # ─── Chat Service ─────────────────────────────────────────────────────────────
+  chat-service:
+    name: Chat Service — Test & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/services/chat-service
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/services/chat-service/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          MONGO_URL: mongodb://localhost:27017/beauty_chat_test
+          OPENAI_API_KEY: test-key
+
+      - name: Build Docker image
+        run: docker build -t chat-service:ci .
+
+  # ─── Prisma Schema Validation ────────────────────────────────────────────────
+  prisma-validate:
+    name: Prisma Schema Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Prisma CLI
+        run: npm install -g prisma
+
+      - name: Validate Prisma schema
+        run: prisma validate --schema=backend/shared/prisma/schema.prisma
+
+  # ─── Docker Compose Integration Test ─────────────────────────────────────────
+  docker-compose-check:
+    name: Docker Compose Syntax Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate docker-compose.yml
+        run: docker compose config --quiet
+        env:
+          POSTGRES_USER: beauty
+          POSTGRES_PASSWORD: beautypassword
+          POSTGRES_DB: beautydb
+          REPLICATE_API_TOKEN: placeholder
+          STABILITY_API_KEY: placeholder
+          OPENAI_API_KEY: placeholder
+          S3_BUCKET: placeholder
+          S3_KEY: placeholder
+          S3_SECRET: placeholder
+          S3_REGION: us-east-1
+          STRIPE_SECRET_KEY: sk_test_placeholder
+          STRIPE_WEBHOOK_SECRET: whsec_placeholder
+          FIREBASE_SERVICE_ACCOUNT: '{}'
