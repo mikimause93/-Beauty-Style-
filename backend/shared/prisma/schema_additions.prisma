@@ -1,0 +1,41 @@
+/*
+ * ─────────────────────────────────────────────────────────────────
+ * Prisma schema ADDITIONS — append these models to schema.prisma
+ * File: backend/shared/prisma/schema_additions.prisma
+ * ─────────────────────────────────────────────────────────────────
+ *
+ * Steps:
+ *   1. Copy the GeneratedLook model into your existing schema.prisma
+ *   2. Add the optional relation fields to your Booking model (see below)
+ *   3. Run: npx prisma migrate dev --name add_generated_look
+ *
+ * Relation design:
+ *   Booking is the owning side — it holds the generatedLookId foreign key.
+ *   GeneratedLook has an optional back-reference via the "look" relation name.
+ */
+
+model GeneratedLook {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalUrl String
+  resultUrls  String[]  @default([])
+  preset      String?
+  params      Json?
+  provider    String?
+  costCredits Float     @default(0)
+  saved       Boolean   @default(false)
+  // Back-reference: populated when a Booking links to this look (owning FK is on Booking)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+/*
+ * Add to your existing Booking model (Booking owns the FK):
+ *
+ *   generatedLookId  String?
+ *   generatedLook    GeneratedLook? @relation(fields: [generatedLookId], references: [id])
+ */
