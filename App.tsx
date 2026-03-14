@@ -1,52 +1,67 @@
-import { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppNavigator } from './src/navigation/AppNavigator';
-import { AuthProvider } from './src/context/AuthContext';
+import { AuthProvider, AuthInitialState } from './src/context/AuthContext';
 import { AppProvider } from './src/context/AppContext';
+import { User } from './src/types/models';
+import { COLORS } from './src/utils/constants';
 
-SplashScreen.preventAutoHideAsync();
+// Prevent native splash from auto-hiding; ignore on web where it's a no-op.
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [initialAuthState, setInitialAuthState] = useState<AuthInitialState>({
+    isLoggedIn: false,
+    hasCompletedOnboarding: false,
+    user: null,
+  });
 
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const [userJson, onboarding] = await Promise.all([
+          AsyncStorage.getItem('user'),
+          AsyncStorage.getItem('onboardingComplete'),
+        ]);
+        setInitialAuthState({
+          isLoggedIn: !!userJson,
+          hasCompletedOnboarding: onboarding === 'true',
+          user: userJson ? (JSON.parse(userJson) as User) : null,
+        });
       } catch (e) {
-        console.warn(e);
+        console.warn('Failed to restore session:', e);
       } finally {
         setAppIsReady(true);
+        SplashScreen.hideAsync().catch(() => {});
       }
     }
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
+  // Show a branded splash while the app initialises — never a black screen.
   if (!appIsReady) {
-    return null;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.white} />
+      </View>
+    );
   }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <AuthProvider>
+        <AuthProvider initialState={initialAuthState}>
           <AppProvider>
             <NavigationContainer>
-              <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-                <StatusBar style="dark" />
-                <AppNavigator />
-              </View>
+              <StatusBar style="dark" />
+              <AppNavigator />
             </NavigationContainer>
           </AppProvider>
         </AuthProvider>
@@ -54,3 +69,12 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: COLORS.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

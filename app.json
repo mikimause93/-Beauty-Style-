@@ -40,7 +40,10 @@
       ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "backgroundColor": "#FF69B4",
+      "name": "Beauty & Style"
     },
     "plugins": [
       [

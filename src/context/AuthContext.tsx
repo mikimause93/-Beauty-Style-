@@ -2,6 +2,12 @@ import { createContext, useState, useCallback, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types/models';
 
+export interface AuthInitialState {
+  isLoggedIn: boolean;
+  hasCompletedOnboarding: boolean;
+  user: User | null;
+}
+
 interface AuthContextType {
   isLoggedIn: boolean;
   hasCompletedOnboarding: boolean;
@@ -22,10 +28,15 @@ export const AuthContext = createContext<AuthContextType>({
   completeOnboarding: async () => {},
 });
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+interface AuthProviderProps {
+  children: ReactNode;
+  initialState?: AuthInitialState;
+}
+
+export function AuthProvider({ children, initialState }: AuthProviderProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialState?.isLoggedIn ?? false);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(initialState?.hasCompletedOnboarding ?? false);
+  const [user, setUser] = useState<User | null>(initialState?.user ?? null);
 
   const login = useCallback(async (email: string, _password: string): Promise<boolean> => {
     try {
