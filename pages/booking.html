@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book your beauty appointment online. Choose your service, stylist, date and time. Easy, fast, and secure booking." />
+  <title>Book Appointment — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .booking-wizard {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      align-items: start;
+    }
+    .booking-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .booking-steps::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: var(--gray-200);
+      z-index: 0;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--gray-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin: 0 auto 8px;
+      transition: var(--transition);
+    }
+    .step.active .step-circle { background: var(--primary); color: white; }
+    .step.done .step-circle { background: #2e7d32; color: white; }
+    .step-label { font-size: 0.78rem; color: var(--gray-500); font-weight: 500; }
+    .step.active .step-label { color: var(--primary); font-weight: 600; }
+
+    .booking-panel { display: none; }
+    .booking-panel.active { display: block; }
+
+    .service-select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .service-select-card {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .service-select-card:hover { border-color: var(--primary-light); }
+    .service-select-card.selected { border-color: var(--primary); background: rgba(201,169,110,0.05); }
+    .service-select-icon { font-size: 2.2rem; margin-bottom: 8px; }
+    .service-select-name { font-weight: 600; font-size: 0.88rem; color: var(--secondary); }
+    .service-select-price { font-size: 0.8rem; color: var(--primary-dark); margin-top: 4px; }
+
+    .stylist-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stylist-card {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .stylist-card:hover { border-color: var(--primary-light); }
+    .stylist-card.selected { border-color: var(--primary); background: rgba(201,169,110,0.05); }
+    .stylist-avatar { font-size: 2.5rem; margin-bottom: 8px; }
+    .stylist-name { font-weight: 600; font-size: 0.82rem; color: var(--secondary); }
+    .stylist-role { font-size: 0.72rem; color: var(--gray-500); margin-top: 2px; }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .time-slot {
+      padding: 10px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .time-slot:hover { border-color: var(--primary-light); }
+    .time-slot.selected { border-color: var(--primary); background: var(--primary); color: white; }
+    .time-slot.unavailable { opacity: 0.4; cursor: not-allowed; background: var(--gray-100); }
+
+    .booking-summary {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 100px;
+    }
+    .summary-title { font-family: var(--font-primary); font-size: 1.2rem; margin-bottom: 20px; }
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 0.88rem;
+    }
+    .summary-item:last-of-type { border-bottom: none; }
+    .summary-label { color: var(--gray-500); }
+    .summary-value { font-weight: 600; color: var(--secondary); }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0 0;
+      margin-top: 8px;
+      border-top: 2px solid var(--gray-200);
+    }
+    .summary-total-label { font-weight: 700; font-size: 1rem; }
+    .summary-total-price { font-family: var(--font-primary); font-size: 1.5rem; color: var(--primary-dark); }
+
+    @media (max-width: 900px) {
+      .booking-wizard { grid-template-columns: 1fr; }
+      .booking-summary { position: static; }
+      .service-select-grid { grid-template-columns: repeat(2, 1fr); }
+      .stylist-grid { grid-template-columns: repeat(2, 1fr); }
+      .time-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .service-select-grid { grid-template-columns: 1fr 1fr; }
+      .time-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Online Booking</span>
+        <h1 class="page-hero-title">Book Your Appointment</h1>
+        <p class="page-hero-subtitle">Select your service, choose your specialist, and pick a time that works for you. Quick and easy in just 3 steps.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>Book Appointment</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <!-- Step Indicator -->
+        <div class="booking-steps" role="list" aria-label="Booking steps">
+          <div class="step active" role="listitem" id="step-ind-1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Service</div>
+          </div>
+          <div class="step" role="listitem" id="step-ind-2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Stylist & Time</div>
+          </div>
+          <div class="step" role="listitem" id="step-ind-3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Your Details</div>
+          </div>
+        </div>
+
+        <div class="booking-wizard">
+          <div class="booking-form-area">
+
+            <!-- Step 1: Service Selection -->
+            <div class="booking-panel active card" style="padding:32px" id="panel-1">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:8px;">Choose a Service</h2>
+              <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:24px;">Select the service you'd like to book</p>
+
+              <div class="service-select-grid" id="service-grid">
+                <div class="service-select-card" data-service="Facial Treatment" data-price="65" data-duration="60 min">
+                  <div class="service-select-icon">💆</div>
+                  <div class="service-select-name">Facial Treatment</div>
+                  <div class="service-select-price">From €45</div>
+                </div>
+                <div class="service-select-card" data-service="Hair Styling" data-price="55" data-duration="60 min">
+                  <div class="service-select-icon">✂️</div>
+                  <div class="service-select-name">Hair Styling</div>
+                  <div class="service-select-price">From €35</div>
+                </div>
+                <div class="service-select-card" data-service="Hair Coloring" data-price="85" data-duration="90 min">
+                  <div class="service-select-icon">🎨</div>
+                  <div class="service-select-name">Hair Coloring</div>
+                  <div class="service-select-price">From €85</div>
+                </div>
+                <div class="service-select-card" data-service="Nail Care" data-price="38" data-duration="45 min">
+                  <div class="service-select-icon">💅</div>
+                  <div class="service-select-name">Nail Care</div>
+                  <div class="service-select-price">From €25</div>
+                </div>
+                <div class="service-select-card" data-service="Makeup Artistry" data-price="65" data-duration="60 min">
+                  <div class="service-select-icon">💄</div>
+                  <div class="service-select-name">Makeup Artistry</div>
+                  <div class="service-select-price">From €40</div>
+                </div>
+                <div class="service-select-card" data-service="Body Massage" data-price="75" data-duration="75 min">
+                  <div class="service-select-icon">🧖</div>
+                  <div class="service-select-name">Body Massage</div>
+                  <div class="service-select-price">From €60</div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="step1-next" disabled>Continue to Stylist &amp; Time →</button>
+            </div>
+
+            <!-- Step 2: Stylist & Time -->
+            <div class="booking-panel card" style="padding:32px" id="panel-2">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:8px;">Choose Your Stylist &amp; Time</h2>
+              <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:24px;">Pick your preferred specialist and appointment time</p>
+
+              <h4 style="font-size:.88rem; font-weight:700; letter-spacing:.5px; color:var(--gray-700); margin-bottom:12px;">SELECT STYLIST</h4>
+              <div class="stylist-grid" id="stylist-grid">
+                <div class="stylist-card" data-stylist="Any Available">
+                  <div class="stylist-avatar">⭐</div>
+                  <div class="stylist-name">Any Available</div>
+                  <div class="stylist-role">Best Match</div>
+                </div>
+                <div class="stylist-card" data-stylist="Sofia Rossi">
+                  <div class="stylist-avatar">👩‍🦰</div>
+                  <div class="stylist-name">Sofia Rossi</div>
+                  <div class="stylist-role">Hair Stylist</div>
+                </div>
+                <div class="stylist-card" data-stylist="Isabella Marino">
+                  <div class="stylist-avatar">👩‍🦱</div>
+                  <div class="stylist-name">Isabella Marino</div>
+                  <div class="stylist-role">Makeup Artist</div>
+                </div>
+                <div class="stylist-card" data-stylist="Laura Conti">
+                  <div class="stylist-avatar">👩</div>
+                  <div class="stylist-name">Laura Conti</div>
+                  <div class="stylist-role">Skin Specialist</div>
+                </div>
+              </div>
+
+              <h4 style="font-size:.88rem; font-weight:700; letter-spacing:.5px; color:var(--gray-700); margin-bottom:12px;">SELECT DATE</h4>
+              <div class="form-group" style="max-width:260px; margin-bottom:20px;">
+                <input type="date" id="booking-date" class="form-control" />
+              </div>
+
+              <h4 style="font-size:.88rem; font-weight:700; letter-spacing:.5px; color:var(--gray-700); margin-bottom:12px;">SELECT TIME</h4>
+              <div class="time-grid" id="time-grid">
+                <div class="time-slot" data-time="9:00 AM">9:00 AM</div>
+                <div class="time-slot" data-time="10:00 AM">10:00 AM</div>
+                <div class="time-slot unavailable" data-time="11:00 AM">11:00 AM</div>
+                <div class="time-slot" data-time="12:00 PM">12:00 PM</div>
+                <div class="time-slot unavailable" data-time="1:00 PM">1:00 PM</div>
+                <div class="time-slot" data-time="2:00 PM">2:00 PM</div>
+                <div class="time-slot" data-time="3:00 PM">3:00 PM</div>
+                <div class="time-slot" data-time="4:00 PM">4:00 PM</div>
+                <div class="time-slot" data-time="5:00 PM">5:00 PM</div>
+                <div class="time-slot unavailable" data-time="6:00 PM">6:00 PM</div>
+              </div>
+
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <button class="btn btn-outline" id="step2-back">← Back</button>
+                <button class="btn btn-primary" id="step2-next" disabled>Continue to Your Details →</button>
+              </div>
+            </div>
+
+            <!-- Step 3: Personal Details -->
+            <div class="booking-panel card" style="padding:32px" id="panel-3">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:8px;">Your Details</h2>
+              <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:24px;">Fill in your contact information to confirm your booking</p>
+
+              <form id="booking-final-form" novalidate>
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="b-firstname">First Name *</label>
+                    <input type="text" id="b-firstname" class="form-control" placeholder="Maria" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="b-lastname">Last Name *</label>
+                    <input type="text" id="b-lastname" class="form-control" placeholder="Rossi" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="b-email">Email Address *</label>
+                  <input type="email" id="b-email" class="form-control" placeholder="maria@example.com" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="b-phone">Phone Number *</label>
+                  <input type="tel" id="b-phone" class="form-control" placeholder="+39 123 456 7890" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="b-notes">Special Requests (optional)</label>
+                  <textarea id="b-notes" class="form-control" rows="3" placeholder="Any allergies, preferences, or special requests..."></textarea>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; font-size:.85rem; color:var(--gray-600);">
+                  <input type="checkbox" id="b-terms" style="width:16px; height:16px; cursor:pointer;" />
+                  <label for="b-terms">I agree to the <a href="#" style="color:var(--primary)">Terms & Conditions</a> and <a href="#" style="color:var(--primary)">Cancellation Policy</a></label>
+                </div>
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-outline" id="step3-back">← Back</button>
+                  <button type="submit" class="btn btn-primary btn-lg">Confirm Booking ✓</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Step 4: Confirmation -->
+            <div class="booking-panel card" style="padding:48px; text-align:center;" id="panel-4">
+              <div style="font-size:4rem; margin-bottom:16px;">🎉</div>
+              <h2 style="font-family:var(--font-primary); font-size:1.8rem; color:var(--secondary); margin-bottom:12px;">Booking Confirmed!</h2>
+              <p style="color:var(--gray-600); margin-bottom:24px;">Your appointment has been successfully booked. We've sent a confirmation to your email address.</p>
+              <div style="background:var(--off-white); border-radius:var(--radius-lg); padding:20px; margin-bottom:28px; text-align:left; max-width:360px; margin-left:auto; margin-right:auto;">
+                <div id="confirm-details"></div>
+              </div>
+              <a href="../index.html" class="btn btn-primary">Back to Home</a>
+            </div>
+
+          </div>
+
+          <!-- Booking Summary Sidebar -->
+          <div class="booking-summary">
+            <h3 class="summary-title">Booking Summary</h3>
+            <div class="summary-item">
+              <span class="summary-label">Service</span>
+              <span class="summary-value" id="sum-service">Not selected</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Stylist</span>
+              <span class="summary-value" id="sum-stylist">—</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Date</span>
+              <span class="summary-value" id="sum-date">—</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Time</span>
+              <span class="summary-value" id="sum-time">—</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Duration</span>
+              <span class="summary-value" id="sum-duration">—</span>
+            </div>
+            <div class="summary-total">
+              <span class="summary-total-label">Estimated Price</span>
+              <span class="summary-total-price" id="sum-price">€—</span>
+            </div>
+            <p style="font-size:.75rem; color:var(--gray-400); margin-top:12px;">Final price confirmed at appointment. Card not required to book.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/booking.js"></script>
+</body>
+</html>

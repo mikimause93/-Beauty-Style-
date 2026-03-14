@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore our complete range of premium beauty services including facials, hair styling, nail care, body treatments, makeup artistry, and wellness spa." />
+  <title>Services — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .service-detail-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      border: 1px solid var(--gray-200);
+    }
+    .service-detail-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .service-detail-image {
+      background: linear-gradient(135deg, var(--primary-light), var(--rose));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .service-detail-body { padding: 28px; }
+    .service-detail-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+    .service-detail-meta span { font-size: 0.82rem; color: var(--gray-500); display: flex; align-items: center; gap: 6px; }
+    .service-options { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .service-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--gray-100);
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+    }
+    .service-option-price { font-weight: 700; color: var(--primary-dark); }
+    .service-option-duration { color: var(--gray-500); font-size: 0.8rem; }
+    @media (max-width: 640px) {
+      .service-detail-card { grid-template-columns: 1fr; }
+      .service-detail-image { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link active">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn" aria-label="Wishlist">♡<span class="nav-badge" style="display:none">0</span></a>
+        <a href="login.html" class="nav-icon-btn" aria-label="Account">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Our Services</span>
+        <h1 class="page-hero-title">Premium Beauty Services</h1>
+        <p class="page-hero-subtitle">From luxurious facials to expert hair transformations — discover the full range of treatments designed to make you shine.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a>
+          <span>›</span>
+          <span>Services</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Services Filter Tabs -->
+    <section class="section-sm" style="background:white; border-bottom:1px solid var(--gray-200);">
+      <div class="container">
+        <div class="products-filter">
+          <button class="filter-btn active" data-filter="all">All Services</button>
+          <button class="filter-btn" data-filter="skincare">Skincare</button>
+          <button class="filter-btn" data-filter="hair">Hair</button>
+          <button class="filter-btn" data-filter="nails">Nails</button>
+          <button class="filter-btn" data-filter="body">Body</button>
+          <button class="filter-btn" data-filter="makeup">Makeup</button>
+          <button class="filter-btn" data-filter="wellness">Wellness</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services List -->
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <div style="display:flex; flex-direction:column; gap:24px;">
+
+          <!-- Facials -->
+          <div data-category="skincare">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>💆</span> Facial Treatments
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#fce4ec,#f8bbd9)">💧</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Signature Hydrating Facial</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Deep hydration treatment using hyaluronic acid and botanical extracts. Perfect for dry or dehydrated skin.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 60 min</span><span>👤 Laura Conti</span><span>⭐ 4.9 (142 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Basic Treatment</span><span class="service-option-duration">45 min</span><span class="service-option-price">€45</span></div>
+                    <div class="service-option"><span>Premium Treatment</span><span class="service-option-duration">60 min</span><span class="service-option-price">€65</span></div>
+                    <div class="service-option"><span>Luxury Treatment + Mask</span><span class="service-option-duration">90 min</span><span class="service-option-price">€90</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">✨</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Anti-Aging Renewal Facial</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Powerful anti-aging treatment using retinol, peptides, and collagen-boosting ingredients to reduce fine lines.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 75 min</span><span>👤 Laura Conti</span><span>⭐ 4.8 (98 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Express Anti-Aging</span><span class="service-option-duration">45 min</span><span class="service-option-price">€55</span></div>
+                    <div class="service-option"><span>Full Anti-Aging Protocol</span><span class="service-option-duration">75 min</span><span class="service-option-price">€85</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hair -->
+          <div data-category="hair">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>✂️</span> Hair Styling
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#e8d5b0,#c9a96e)">✂️</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Haircut & Styling</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Precision cuts tailored to your face shape, hair type, and lifestyle. Includes wash, cut, and professional blow-dry finish.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 60 min</span><span>👤 Sofia Rossi</span><span>⭐ 4.9 (287 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Women's Cut & Blowdry</span><span class="service-option-duration">60 min</span><span class="service-option-price">€55</span></div>
+                    <div class="service-option"><span>Men's Cut & Styling</span><span class="service-option-duration">40 min</span><span class="service-option-price">€35</span></div>
+                    <div class="service-option"><span>Children's Cut</span><span class="service-option-duration">30 min</span><span class="service-option-price">€25</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#e8f5e9,#a5d6a7)">🎨</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Hair Coloring & Balayage</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">From full-color transformations to subtle highlights and trendy balayage. We use only premium, salon-grade color products.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 90–180 min</span><span>👤 Sofia Rossi</span><span>⭐ 4.9 (214 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Full Color</span><span class="service-option-duration">90 min</span><span class="service-option-price">€85</span></div>
+                    <div class="service-option"><span>Highlights / Lowlights</span><span class="service-option-duration">120 min</span><span class="service-option-price">€110</span></div>
+                    <div class="service-option"><span>Balayage / Ombre</span><span class="service-option-duration">180 min</span><span class="service-option-price">€160</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nails -->
+          <div data-category="nails">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>💅</span> Nail Care
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#f3e5f5,#ce93d8)">💅</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Luxury Manicure</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Indulgent hand care with cuticle treatment, nail shaping, exfoliation, and your choice of nail polish or gel.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 45–60 min</span><span>👤 Chiara Ferrari</span><span>⭐ 4.8 (176 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Classic Manicure</span><span class="service-option-duration">45 min</span><span class="service-option-price">€25</span></div>
+                    <div class="service-option"><span>Gel Manicure</span><span class="service-option-duration">60 min</span><span class="service-option-price">€38</span></div>
+                    <div class="service-option"><span>Nail Art + Gel</span><span class="service-option-duration">75 min</span><span class="service-option-price">€55</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div data-category="body">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>🧖</span> Body Treatments
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#e3f2fd,#90caf9)">🛁</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Full Body Massage</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Therapeutic full-body massage to relieve tension, improve circulation, and restore balance. Choose from Swedish, deep tissue, or hot stone.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 60–90 min</span><span>⭐ 4.9 (312 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Swedish Massage</span><span class="service-option-duration">60 min</span><span class="service-option-price">€60</span></div>
+                    <div class="service-option"><span>Deep Tissue Massage</span><span class="service-option-duration">75 min</span><span class="service-option-price">€75</span></div>
+                    <div class="service-option"><span>Hot Stone Therapy</span><span class="service-option-duration">90 min</span><span class="service-option-price">€95</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Makeup -->
+          <div data-category="makeup">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>💄</span> Makeup Artistry
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#fce4ec,#f48fb1)">💄</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Professional Makeup Application</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">Flawless makeup for any occasion — from natural everyday looks to glamorous event and bridal makeup by our certified artists.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 60–120 min</span><span>👤 Isabella Marino</span><span>⭐ 4.9 (198 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Everyday / Casual</span><span class="service-option-duration">45 min</span><span class="service-option-price">€40</span></div>
+                    <div class="service-option"><span>Evening / Event</span><span class="service-option-duration">60 min</span><span class="service-option-price">€65</span></div>
+                    <div class="service-option"><span>Bridal Makeup</span><span class="service-option-duration">120 min</span><span class="service-option-price">€130</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wellness -->
+          <div data-category="wellness">
+            <h2 style="font-family:var(--font-primary); font-size:1.4rem; color:var(--secondary); margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <span>🌿</span> Wellness &amp; Spa
+            </h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="service-detail-card">
+                <div class="service-detail-image" style="background:linear-gradient(135deg,#e8f5e9,#a5d6a7)">🌿</div>
+                <div class="service-detail-body">
+                  <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:6px;">Signature Spa Package</h3>
+                  <p style="font-size:.88rem; color:var(--gray-600); margin-bottom:0;">The ultimate relaxation experience combining aromatherapy, body wrap, facial treatment, and full massage for complete rejuvenation.</p>
+                  <div class="service-detail-meta">
+                    <span>⏱ 3 hours</span><span>⭐ 5.0 (87 reviews)</span>
+                  </div>
+                  <div class="service-options">
+                    <div class="service-option"><span>Half-Day Spa</span><span class="service-option-duration">3 hours</span><span class="service-option-price">€185</span></div>
+                    <div class="service-option"><span>Full-Day Spa Retreat</span><span class="service-option-duration">6 hours</span><span class="service-option-price">€320</span></div>
+                  </div>
+                  <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top:16px;">Book This Service</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="promo-section">
+      <div class="container">
+        <span class="promo-tag">Ready?</span>
+        <h2 class="promo-title">Book Your Appointment Today</h2>
+        <p class="promo-subtitle">Transform your look with our expert beauty professionals.</p>
+        <a href="booking.html" class="btn btn-outline-white btn-lg">Reserve Your Spot</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
