@@ -41,7 +41,7 @@ export function RegisterScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <LinearGradient colors={[COLORS.secondary, COLORS.primary]} style={styles.header}>
           <Text style={styles.logo}>✨</Text>
@@ -114,6 +114,7 @@ export function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: COLORS.white },
   header: { paddingTop: 80, paddingBottom: 40, alignItems: 'center' },
   logo: { fontSize: 50, marginBottom: 8 },
   title: { fontSize: 28, fontWeight: 'bold', color: COLORS.white },

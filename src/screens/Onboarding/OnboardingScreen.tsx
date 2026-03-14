@@ -83,7 +83,7 @@ export function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: COLORS.primary },
   skipButton: { position: 'absolute', top: 60, right: SIZES.lg, zIndex: 1 },
   skipText: { color: COLORS.white, fontSize: 16, opacity: 0.8 },
   content: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: SIZES.xl },

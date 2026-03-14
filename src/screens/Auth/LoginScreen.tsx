@@ -32,7 +32,7 @@ export function LoginScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.header}>
           <Text style={styles.logo}>💄</Text>
@@ -100,6 +100,7 @@ export function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: COLORS.white },
   header: { paddingTop: 80, paddingBottom: 40, alignItems: 'center' },
   logo: { fontSize: 60, marginBottom: 8 },
   appName: { fontSize: 32, fontWeight: 'bold', color: COLORS.white },
