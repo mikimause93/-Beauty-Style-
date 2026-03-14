@@ -7,12 +7,15 @@ import { MyAppointmentsScreen } from '../screens/Profile/MyAppointmentsScreen';
 import { PrivacyPolicyScreen } from '../screens/Profile/PrivacyPolicyScreen';
 import { TermsScreen } from '../screens/Profile/TermsScreen';
 import { ProfileStackParamList } from '../types/navigation';
+import { COLORS } from '../utils/constants';
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
 export function ProfileNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: COLORS.primary } }}
+    >
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />

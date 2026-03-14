@@ -32,6 +32,8 @@ export function MainNavigator() {
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: COLORS.gray,
         headerShown: false,
+        // Brand-pink behind every tab so no black shows during tab switches.
+        sceneStyle: { backgroundColor: COLORS.primary },
         tabBarStyle: {
           backgroundColor: COLORS.white,
           borderTopColor: COLORS.lightGray,

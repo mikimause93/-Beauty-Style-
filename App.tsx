@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -16,13 +16,17 @@ import { COLORS } from './src/utils/constants';
 // Prevent native splash from auto-hiding; ignore on web where it's a no-op.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
-// Explicit navigation theme — prevents dark-theme Android devices from showing
-// a black background behind the navigation stack.
+// Navigation theme using brand colours so the background behind every screen
+// is always the Beauty & Style pink — never white, cream, or black.
 const NAV_THEME = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: COLORS.background,
+    background: COLORS.primary,
+    card: COLORS.white,
+    text: COLORS.text,
+    border: COLORS.lightGray,
+    notification: COLORS.accent,
   },
 };
 
@@ -50,7 +54,7 @@ export default function App() {
         console.warn('Failed to restore session:', e);
       } finally {
         setAppIsReady(true);
-        // NOTE: splash is now hidden via onLayout (see below) to guarantee
+        // NOTE: splash is hidden via onLayout below to guarantee
         // the native layer has already painted before we reveal it.
       }
     }
@@ -58,29 +62,32 @@ export default function App() {
   }, []);
 
   // Hide the splash screen only AFTER the root view has been laid out and
-  // painted. This eliminates the black-frame flash on Android that occurs
-  // when hideAsync() is called before React commits the first frame.
+  // painted — eliminates the black-frame flash on Android.
   const onRootLayout = useCallback(() => {
     SplashScreen.hideAsync().catch(() => {});
   }, []);
 
-  // Show a branded splash while the app initialises — never a black screen.
+  // Branded loading screen — always shows Beauty & Style colours, never black/blank.
   if (!appIsReady) {
     return (
       <View style={styles.loadingContainer} onLayout={onRootLayout}>
-        <ActivityIndicator size="large" color={COLORS.white} />
+        <Text style={styles.loadingEmoji}>💄</Text>
+        <Text style={styles.loadingTitle}>Beauty &amp; Style</Text>
+        <Text style={styles.loadingTagline}>Your personal beauty companion</Text>
+        <ActivityIndicator size="large" color={COLORS.white} style={styles.spinner} />
       </View>
     );
   }
 
   return (
     <ErrorBoundary>
+      {/* Root view is always brand-pink so no surface is ever black or blank */}
       <GestureHandlerRootView style={styles.root} onLayout={onRootLayout}>
         <SafeAreaProvider>
           <AuthProvider initialState={initialAuthState}>
             <AppProvider>
               <NavigationContainer theme={NAV_THEME}>
-                <StatusBar style="dark" />
+                <StatusBar style="light" backgroundColor={COLORS.primary} />
                 <AppNavigator />
               </NavigationContainer>
             </AppProvider>
@@ -92,14 +99,37 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  // Brand-pink root — ensures the underlying surface is always the brand colour.
   root: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.primary,
   },
+  // Full-brand loading/splash shown while AsyncStorage is hydrating.
   loadingContainer: {
     flex: 1,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 32,
+  },
+  loadingEmoji: {
+    fontSize: 72,
+    marginBottom: 16,
+  },
+  loadingTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: COLORS.white,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  loadingTagline: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.85)',
+    textAlign: 'center',
+    marginBottom: 40,
+  },
+  spinner: {
+    marginTop: 8,
   },
 });

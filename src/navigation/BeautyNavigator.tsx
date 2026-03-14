@@ -15,12 +15,15 @@ import { VirtualTryOnScreen } from '../screens/VirtualTryOn/VirtualTryOnScreen';
 import { BeautyDiaryScreen } from '../screens/BeautyDiary/BeautyDiaryScreen';
 import { DiaryEntryScreen } from '../screens/BeautyDiary/DiaryEntryScreen';
 import { BeautyStackParamList } from '../types/navigation';
+import { COLORS } from '../utils/constants';
 
 const Stack = createNativeStackNavigator<BeautyStackParamList>();
 
 export function BeautyNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: COLORS.primary } }}
+    >
       <Stack.Screen name="BeautyHub" component={BeautyHubScreen} />
       <Stack.Screen name="TutorialDetail" component={TutorialDetailScreen} />
       <Stack.Screen name="MakeupGuide" component={MakeupGuideScreen} />

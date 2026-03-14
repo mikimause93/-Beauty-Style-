@@ -5,12 +5,15 @@ import { SearchScreen } from '../screens/Home/SearchScreen';
 import { ProductDetailScreen } from '../screens/Products/ProductDetailScreen';
 import { TutorialDetailScreen } from '../screens/BeautyTips/TutorialDetailScreen';
 import { HomeStackParamList } from '../types/navigation';
+import { COLORS } from '../utils/constants';
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export function HomeNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: COLORS.primary } }}
+    >
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="Search" component={SearchScreen} />

@@ -6,12 +6,15 @@ import { SelectSalonScreen } from '../screens/Appointments/SelectSalonScreen';
 import { SelectServiceScreen } from '../screens/Appointments/SelectServiceScreen';
 import { ConfirmBookingScreen } from '../screens/Appointments/ConfirmBookingScreen';
 import { AppointmentStackParamList } from '../types/navigation';
+import { COLORS } from '../utils/constants';
 
 const Stack = createNativeStackNavigator<AppointmentStackParamList>();
 
 export function AppointmentNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: COLORS.primary } }}
+    >
       <Stack.Screen name="Appointments" component={AppointmentsScreen} />
       <Stack.Screen name="BookAppointment" component={BookAppointmentScreen} />
       <Stack.Screen name="AppointmentDetail" component={AppointmentDetailScreen} />
