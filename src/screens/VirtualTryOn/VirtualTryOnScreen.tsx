@@ -1,10 +1,21 @@
-import { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Header } from '../../components/common/Header';
 import { Button } from '../../components/common/Button';
 import { COLORS, SIZES } from '../../utils/constants';
+
+// expo-camera's CameraView is not supported in web browsers.
+// Importing it unconditionally throws a runtime error on web and crashes the
+// whole navigator. We lazy-require it only on native platforms.
+const CameraComponents =
+  Platform.OS !== 'web'
+    ? // eslint-disable-next-line @typescript-eslint/no-var-requires
+      (require('expo-camera') as {
+        CameraView: React.ComponentType<{ style?: object; facing?: string; children?: React.ReactNode }>;
+        useCameraPermissions: () => [{ granted: boolean } | null, () => Promise<void>];
+      })
+    : null;
 
 const LIPSTICK_COLORS = [
   { id: 'c1', name: 'Classic Red', color: '#FF0000' },
@@ -22,10 +33,61 @@ const BLUSH_COLORS = [
 ];
 
 export function VirtualTryOnScreen() {
-  const [permission, requestPermission] = useCameraPermissions();
   const [selectedLipColor, setSelectedLipColor] = useState<string | null>(null);
   const [selectedBlush, setSelectedBlush] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'lips' | 'blush'>('lips');
+
+  // On web, the camera API is not available — show a friendly placeholder.
+  if (Platform.OS === 'web') {
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: COLORS.white }]} edges={['top']}>
+        <Header title="Virtual Try-On" showBack />
+        <View style={styles.center}>
+          <Text style={styles.permEmoji}>💄</Text>
+          <Text style={styles.permTitle}>Virtual Try-On</Text>
+          <Text style={styles.permText}>
+            The live camera try-on feature is available in the iOS and Android apps. Download the app to try it out!
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const useCameraPermissions = CameraComponents!.useCameraPermissions;
+  const CameraView = CameraComponents!.CameraView;
+
+  return <VirtualTryOnNative
+    useCameraPermissions={useCameraPermissions}
+    CameraView={CameraView}
+    selectedLipColor={selectedLipColor}
+    setSelectedLipColor={setSelectedLipColor}
+    selectedBlush={selectedBlush}
+    setSelectedBlush={setSelectedBlush}
+    activeTab={activeTab}
+    setActiveTab={setActiveTab}
+  />;
+}
+
+function VirtualTryOnNative({
+  useCameraPermissions,
+  CameraView,
+  selectedLipColor,
+  setSelectedLipColor,
+  selectedBlush,
+  setSelectedBlush,
+  activeTab,
+  setActiveTab,
+}: {
+  useCameraPermissions: () => [{ granted: boolean } | null, () => Promise<void>];
+  CameraView: React.ComponentType<{ style?: object; facing?: string; children?: React.ReactNode }>;
+  selectedLipColor: string | null;
+  setSelectedLipColor: (c: string | null) => void;
+  selectedBlush: string | null;
+  setSelectedBlush: (c: string | null) => void;
+  activeTab: 'lips' | 'blush';
+  setActiveTab: (t: 'lips' | 'blush') => void;
+}) {
+  const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
     return (

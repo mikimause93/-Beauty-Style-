@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { AuthProvider, AuthInitialState } from './src/context/AuthContext';
 import { AppProvider } from './src/context/AppContext';
+import { ErrorBoundary } from './src/components/common/ErrorBoundary';
 import { User } from './src/types/models';
 import { COLORS } from './src/utils/constants';
 
@@ -55,18 +56,20 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <AuthProvider initialState={initialAuthState}>
-          <AppProvider>
-            <NavigationContainer>
-              <StatusBar style="dark" />
-              <AppNavigator />
-            </NavigationContainer>
-          </AppProvider>
-        </AuthProvider>
-      </SafeAreaProvider>
-    </GestureHandlerRootView>
+    <ErrorBoundary>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <AuthProvider initialState={initialAuthState}>
+            <AppProvider>
+              <NavigationContainer>
+                <StatusBar style="dark" />
+                <AppNavigator />
+              </NavigationContainer>
+            </AppProvider>
+          </AuthProvider>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </ErrorBoundary>
   );
 }
 
