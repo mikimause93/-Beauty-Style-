@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your Beauty & Style profile — manage appointments, orders, wishlist, and personal details." />
+  <title>My Profile — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+    .profile-sidebar { position: sticky; top: 100px; background: white; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .profile-sidebar-header { background: linear-gradient(135deg, var(--primary), var(--rose)); padding: 32px 24px; text-align: center; }
+    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: white; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; border: 3px solid rgba(255,255,255,.5); }
+    .profile-name { font-family: var(--font-primary); font-size: 1.2rem; color: white; margin-bottom: 4px; }
+    .profile-member { font-size: .78rem; color: rgba(255,255,255,.8); background: rgba(255,255,255,.15); padding: 3px 12px; border-radius: 20px; display: inline-block; }
+    .profile-nav { padding: 12px; }
+    .profile-nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius-md); font-size: .9rem; font-weight: 500; color: var(--secondary-light); cursor: pointer; transition: var(--transition); }
+    .profile-nav-item:hover, .profile-nav-item.active { background: rgba(201,169,110,.1); color: var(--primary-dark); }
+    .profile-nav-item .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+    .profile-panel { display: none; }
+    .profile-panel.active { display: block; }
+    .appointment-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; transition: var(--transition); }
+    .appointment-card:hover { border-color: var(--primary-light); box-shadow: var(--shadow-sm); }
+    .appt-service { font-weight: 700; color: var(--secondary); margin-bottom: 4px; }
+    .appt-details { font-size: .82rem; color: var(--gray-500); }
+    .appt-status { padding: 4px 12px; border-radius: var(--radius-full); font-size: .75rem; font-weight: 700; }
+    .status-upcoming { background: rgba(201,169,110,.15); color: var(--primary-dark); }
+    .status-completed { background: rgba(46,125,50,.12); color: #2e7d32; }
+    .status-cancelled { background: rgba(198,40,40,.1); color: #c62828; }
+    .order-row { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: white; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 900px) { .profile-layout { grid-template-columns: 1fr; } .profile-sidebar { position: static; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <div style="background:linear-gradient(135deg,#fdf8f4,#f9f0e8); padding:100px 0 40px;">
+      <div class="container">
+        <h1 style="font-family:var(--font-primary); font-size:2rem; margin-bottom:4px;">My Account</h1>
+        <p style="color:var(--gray-600);">Manage your appointments, orders, and preferences.</p>
+      </div>
+    </div>
+
+    <section class="section-sm" style="background:var(--off-white)">
+      <div class="container">
+        <div class="profile-layout">
+          <!-- Sidebar -->
+          <aside class="profile-sidebar" role="navigation" aria-label="Profile navigation">
+            <div class="profile-sidebar-header">
+              <div class="profile-avatar">👩</div>
+              <div class="profile-name">Maria Rossi</div>
+              <div class="profile-member">✦ Member since 2024</div>
+            </div>
+            <nav class="profile-nav">
+              <div class="profile-nav-item active" data-panel="dashboard">
+                <span class="icon">🏠</span> Dashboard
+              </div>
+              <div class="profile-nav-item" data-panel="appointments">
+                <span class="icon">📅</span> My Appointments
+              </div>
+              <div class="profile-nav-item" data-panel="orders">
+                <span class="icon">🛍️</span> My Orders
+              </div>
+              <div class="profile-nav-item" data-panel="wishlist">
+                <span class="icon">♥</span> Wishlist
+              </div>
+              <div class="profile-nav-item" data-panel="settings">
+                <span class="icon">⚙️</span> Settings
+              </div>
+              <hr class="divider-line" />
+              <div class="profile-nav-item" onclick="window.BS?.showToast('Signed out successfully', 'info'); setTimeout(() => window.location.href='login.html', 800);">
+                <span class="icon">🚪</span> Sign Out
+              </div>
+            </nav>
+          </aside>
+
+          <!-- Main Content -->
+          <div>
+            <!-- Dashboard Panel -->
+            <div class="profile-panel active card" style="padding:32px;" id="panel-dashboard">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:4px;">Welcome back, Maria! 👋</h2>
+              <p style="color:var(--gray-600); margin-bottom:28px;">Here's an overview of your account activity.</p>
+
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:32px;">
+                <div style="background:linear-gradient(135deg,rgba(201,169,110,.1),rgba(232,160,180,.1)); border-radius:var(--radius-lg); padding:20px; text-align:center;">
+                  <div style="font-size:1.8rem; font-weight:700; font-family:var(--font-primary); color:var(--primary-dark);">3</div>
+                  <div style="font-size:.82rem; color:var(--gray-500); margin-top:4px;">Upcoming Appointments</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(100,200,150,.1),rgba(60,180,100,.1)); border-radius:var(--radius-lg); padding:20px; text-align:center;">
+                  <div style="font-size:1.8rem; font-weight:700; font-family:var(--font-primary); color:#2e7d32;">8</div>
+                  <div style="font-size:.82rem; color:var(--gray-500); margin-top:4px;">Completed Sessions</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(100,149,237,.1),rgba(65,105,225,.1)); border-radius:var(--radius-lg); padding:20px; text-align:center;">
+                  <div style="font-size:1.8rem; font-weight:700; font-family:var(--font-primary); color:#3f51b5;">5</div>
+                  <div style="font-size:.82rem; color:var(--gray-500); margin-top:4px;">Items in Wishlist</div>
+                </div>
+              </div>
+
+              <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:16px;">Upcoming Appointment</h3>
+              <div class="appointment-card" style="margin-bottom:12px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                  <div style="width:52px; height:52px; background:rgba(201,169,110,.15); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">💆</div>
+                  <div>
+                    <div class="appt-service">Signature Hydrating Facial</div>
+                    <div class="appt-details">📅 March 18, 2026 · 11:00 AM · Laura Conti · 60 min</div>
+                  </div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                  <span class="appt-status status-upcoming">Upcoming</span>
+                  <button class="btn btn-sm btn-outline">Reschedule</button>
+                </div>
+              </div>
+
+              <div class="text-center mt-lg">
+                <a href="booking.html" class="btn btn-primary">Book New Appointment</a>
+              </div>
+            </div>
+
+            <!-- Appointments Panel -->
+            <div class="profile-panel card" style="padding:32px;" id="panel-appointments">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+                <h2 style="font-family:var(--font-primary); font-size:1.4rem;">My Appointments</h2>
+                <a href="booking.html" class="btn btn-primary btn-sm">+ New Booking</a>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <div class="appointment-card">
+                  <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="width:48px; height:48px; background:rgba(201,169,110,.15); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">💆</div>
+                    <div>
+                      <div class="appt-service">Signature Hydrating Facial</div>
+                      <div class="appt-details">March 18, 2026 · 11:00 AM · Laura Conti</div>
+                    </div>
+                  </div>
+                  <span class="appt-status status-upcoming">Upcoming</span>
+                </div>
+                <div class="appointment-card">
+                  <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="width:48px; height:48px; background:rgba(100,200,150,.15); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">✂️</div>
+                    <div>
+                      <div class="appt-service">Haircut &amp; Blowdry</div>
+                      <div class="appt-details">Feb 24, 2026 · 2:00 PM · Sofia Rossi</div>
+                    </div>
+                  </div>
+                  <span class="appt-status status-completed">Completed</span>
+                </div>
+                <div class="appointment-card">
+                  <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="width:48px; height:48px; background:rgba(180,130,220,.15); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">💅</div>
+                    <div>
+                      <div class="appt-service">Gel Manicure + Nail Art</div>
+                      <div class="appt-details">Feb 10, 2026 · 3:00 PM · Chiara Ferrari</div>
+                    </div>
+                  </div>
+                  <span class="appt-status status-completed">Completed</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Orders Panel -->
+            <div class="profile-panel card" style="padding:32px;" id="panel-orders">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:24px;">My Orders</h2>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div class="order-row">
+                  <div>
+                    <div style="font-weight:700; color:var(--secondary);">Order #BS-20260308</div>
+                    <div style="font-size:.8rem; color:var(--gray-500); margin-top:2px;">Charlotte Tilbury Lipstick × 1 · NARS Concealer × 1</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:700; color:var(--secondary); margin-bottom:4px;">€78.00</div>
+                    <span style="font-size:.75rem; font-weight:700; background:rgba(46,125,50,.12); color:#2e7d32; padding:3px 10px; border-radius:20px;">Delivered</span>
+                  </div>
+                </div>
+                <div class="order-row">
+                  <div>
+                    <div style="font-weight:700; color:var(--secondary);">Order #BS-20260215</div>
+                    <div style="font-size:.8rem; color:var(--gray-500); margin-top:2px;">Kérastase Hair Oil × 1</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:700; color:var(--secondary); margin-bottom:4px;">€46.00</div>
+                    <span style="font-size:.75rem; font-weight:700; background:rgba(46,125,50,.12); color:#2e7d32; padding:3px 10px; border-radius:20px;">Delivered</span>
+                  </div>
+                </div>
+                <div class="order-row">
+                  <div>
+                    <div style="font-weight:700; color:var(--secondary);">Order #BS-20260120</div>
+                    <div style="font-size:.8rem; color:var(--gray-500); margin-top:2px;">La Mer Moisturizing Cream × 1</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-weight:700; color:var(--secondary); margin-bottom:4px;">€185.00</div>
+                    <span style="font-size:.75rem; font-weight:700; background:rgba(201,169,110,.15); color:var(--primary-dark); padding:3px 10px; border-radius:20px;">In Transit</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wishlist Panel -->
+            <div class="profile-panel card" style="padding:32px;" id="panel-wishlist">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:24px;">My Wishlist</h2>
+              <div class="products-grid" style="grid-template-columns:repeat(3,1fr);">
+                <article class="product-card" data-id="w001" data-category="skincare">
+                  <div class="product-image">🧴<button class="product-wishlist active" aria-label="Remove from wishlist">♥</button></div>
+                  <div class="product-info">
+                    <div class="product-brand">La Mer</div>
+                    <h3 class="product-name">Crème de la Mer</h3>
+                    <div class="product-price"><span class="price-current">€185</span><button class="btn-add-cart">Add to Cart</button></div>
+                  </div>
+                </article>
+                <article class="product-card" data-id="w002" data-category="fragrance">
+                  <div class="product-image" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">🌺<button class="product-wishlist active" aria-label="Remove from wishlist">♥</button></div>
+                  <div class="product-info">
+                    <div class="product-brand">Chanel</div>
+                    <h3 class="product-name">N°5 Eau de Parfum</h3>
+                    <div class="product-price"><span class="price-current">€130</span><button class="btn-add-cart">Add to Cart</button></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="profile-panel card" style="padding:32px;" id="panel-settings">
+              <h2 style="font-family:var(--font-primary); font-size:1.4rem; margin-bottom:24px;">Account Settings</h2>
+              <form id="settings-form" novalidate>
+                <h3 style="font-size:.85rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gray-600); margin-bottom:16px;">Personal Information</h3>
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="s-firstname">First Name</label>
+                    <input type="text" id="s-firstname" class="form-control" value="Maria" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="s-lastname">Last Name</label>
+                    <input type="text" id="s-lastname" class="form-control" value="Rossi" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="s-email">Email</label>
+                  <input type="email" id="s-email" class="form-control" value="maria.rossi@example.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="s-phone">Phone</label>
+                  <input type="tel" id="s-phone" class="form-control" value="+39 123 456 7890" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="s-birthday">Date of Birth</label>
+                  <input type="date" id="s-birthday" class="form-control" value="1990-06-15" />
+                </div>
+                <hr class="divider-line" />
+                <h3 style="font-size:.85rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gray-600); margin-bottom:16px;">Notifications</h3>
+                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+                  <label style="display:flex; align-items:center; gap:10px; font-size:.88rem; cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--primary);"> Email reminders for upcoming appointments</label>
+                  <label style="display:flex; align-items:center; gap:10px; font-size:.88rem; cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--primary);"> SMS notifications for bookings</label>
+                  <label style="display:flex; align-items:center; gap:10px; font-size:.88rem; cursor:pointer;"><input type="checkbox" style="accent-color:var(--primary);"> Marketing emails and special offers</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+  <script>
+    // Profile navigation
+    document.querySelectorAll('.profile-nav-item[data-panel]').forEach(item => {
+      item.addEventListener('click', () => {
+        const panelId = item.dataset.panel;
+        document.querySelectorAll('.profile-nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById(`panel-${panelId}`)?.classList.add('active');
+      });
+    });
+
+    // Settings form
+    document.getElementById('settings-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      window.BS?.showToast('Settings saved successfully ✓', 'success');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse our gallery of stunning beauty transformations — hair, makeup, nails, skincare, and more." />
+  <title>Gallery — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .gallery-masonry {
+      columns: 4;
+      column-gap: 16px;
+    }
+    .gallery-masonry-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-masonry-thumb {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary-light), var(--rose));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      transition: var(--transition);
+    }
+    .gallery-masonry-item:nth-child(odd) .gallery-masonry-thumb { height: 220px; }
+    .gallery-masonry-item:nth-child(even) .gallery-masonry-thumb { height: 280px; }
+    .gallery-masonry-item:nth-child(3n) .gallery-masonry-thumb { height: 180px; }
+    .gallery-masonry-item:nth-child(2) .gallery-masonry-thumb { background: linear-gradient(135deg, #f8e1f4, #e1bee7); }
+    .gallery-masonry-item:nth-child(3) .gallery-masonry-thumb { background: linear-gradient(135deg, #fce4ec, #f8bbd9); }
+    .gallery-masonry-item:nth-child(4) .gallery-masonry-thumb { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+    .gallery-masonry-item:nth-child(5) .gallery-masonry-thumb { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+    .gallery-masonry-item:nth-child(6) .gallery-masonry-thumb { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+    .gallery-masonry-item:nth-child(7) .gallery-masonry-thumb { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+    .gallery-masonry-item:nth-child(8) .gallery-masonry-thumb { background: linear-gradient(135deg, #fffde7, #fff9c4); }
+    .gallery-masonry-item:nth-child(9) .gallery-masonry-thumb { background: linear-gradient(135deg, #fbe9e7, #ffccbc); }
+    .gallery-masonry-item:nth-child(10) .gallery-masonry-thumb { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); }
+    .gallery-masonry-item:nth-child(11) .gallery-masonry-thumb { background: linear-gradient(135deg, #e8d5b0, #c9a96e); }
+    .gallery-masonry-item:nth-child(12) .gallery-masonry-thumb { background: linear-gradient(135deg, #fce4ec, #f48fb1); }
+    .gallery-masonry-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      padding: 20px;
+      text-align: center;
+    }
+    .gallery-masonry-item:hover .gallery-masonry-overlay { background: rgba(0,0,0,0.5); }
+    .gallery-masonry-item:hover .gallery-masonry-thumb { transform: scale(1.04); }
+    .gallery-masonry-overlay-content { color: white; opacity: 0; transform: translateY(10px); transition: var(--transition); }
+    .gallery-masonry-item:hover .gallery-masonry-overlay-content { opacity: 1; transform: translateY(0); }
+    @media (max-width: 1024px) { .gallery-masonry { columns: 3; } }
+    @media (max-width: 640px) { .gallery-masonry { columns: 2; } }
+    @media (max-width: 400px) { .gallery-masonry { columns: 1; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn">♡</a>
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Portfolio</span>
+        <h1 class="page-hero-title">Beauty Portfolio</h1>
+        <p class="page-hero-subtitle">A showcase of transformations, artistry, and beauty created by our talented team. Get inspired for your next appointment.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>Gallery</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section-sm" style="background:white; border-bottom:1px solid var(--gray-200);">
+      <div class="container">
+        <div class="products-filter">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="hair">Hair</button>
+          <button class="filter-btn" data-filter="makeup">Makeup</button>
+          <button class="filter-btn" data-filter="nails">Nails</button>
+          <button class="filter-btn" data-filter="skincare">Skincare</button>
+          <button class="filter-btn" data-filter="bridal">Bridal</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <div class="gallery-masonry" role="list">
+          <div class="gallery-masonry-item" role="listitem" data-category="makeup" tabindex="0">
+            <div class="gallery-masonry-thumb">🌸</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Bridal Makeup</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Isabella Marino</p>
+                <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
+                  <span style="font-size:.75rem; background:rgba(255,255,255,.2); padding:3px 10px; border-radius:20px;">Makeup</span>
+                  <span style="font-size:.75rem; background:rgba(255,255,255,.2); padding:3px 10px; border-radius:20px;">Bridal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="hair" tabindex="0">
+            <div class="gallery-masonry-thumb">✂️</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Balayage Hair</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Sofia Rossi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="nails" tabindex="0">
+            <div class="gallery-masonry-thumb">💅</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Floral Nail Art</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Chiara Ferrari</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="skincare" tabindex="0">
+            <div class="gallery-masonry-thumb">💆</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Glow Facial</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Laura Conti</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="hair" tabindex="0">
+            <div class="gallery-masonry-thumb">🌈</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Vivid Color</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Sofia Rossi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="makeup" tabindex="0">
+            <div class="gallery-masonry-thumb">💄</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Smoky Eye</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Isabella Marino</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="bridal" tabindex="0">
+            <div class="gallery-masonry-thumb">👰</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Bridal Updo</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Sofia Rossi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="nails" tabindex="0">
+            <div class="gallery-masonry-thumb">🌼</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Gel Manicure</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Chiara Ferrari</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="skincare" tabindex="0">
+            <div class="gallery-masonry-thumb">🌿</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Natural Glow</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Laura Conti</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="hair" tabindex="0">
+            <div class="gallery-masonry-thumb">🏖️</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Beach Waves</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Sofia Rossi</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="makeup" tabindex="0">
+            <div class="gallery-masonry-thumb">⭐</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Golden Hour</strong>
+                <p style="font-size:.8rem; margin-top:4px;">By Isabella Marino</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry-item" role="listitem" data-category="bridal" tabindex="0">
+            <div class="gallery-masonry-thumb">💍</div>
+            <div class="gallery-masonry-overlay">
+              <div class="gallery-masonry-overlay-content">
+                <strong style="font-family:var(--font-primary); font-size:1rem;">Wedding Day Look</strong>
+                <p style="font-size:.8rem; margin-top:4px;">Complete Bridal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-xl">
+          <p style="color:var(--gray-500); margin-bottom:16px;">Inspired? Book your transformation today.</p>
+          <a href="booking.html" class="btn btn-primary btn-lg">Book Your Appointment</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+  <script>
+    // Gallery lightbox for masonry items
+    document.querySelectorAll('.gallery-masonry-item').forEach(item => {
+      const activate = () => {
+        const emoji = item.querySelector('.gallery-masonry-thumb')?.textContent?.trim() || '🌸';
+        const title = item.querySelector('.gallery-masonry-overlay-content strong')?.textContent || 'Gallery';
+        const sub = item.querySelector('.gallery-masonry-overlay-content p')?.textContent || '';
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay open';
+        overlay.innerHTML = `
+          <div class="modal" style="max-width:560px; text-align:center;">
+            <div class="modal-header">
+              <div>
+                <h3 style="font-family:var(--font-primary)">${title}</h3>
+                <p style="font-size:.82rem; color:var(--gray-500); margin:0">${sub}</p>
+              </div>
+              <button class="modal-close">✕</button>
+            </div>
+            <div style="height:360px; background:linear-gradient(135deg,#fdf0e0,#fce4ec); border-radius:var(--radius-lg); display:flex; align-items:center; justify-content:center; font-size:8rem; margin-bottom:20px;">${emoji}</div>
+            <a href="booking.html" class="btn btn-primary">Book This Look</a>
+          </div>`;
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay || e.target.classList.contains('modal-close')) {
+            overlay.remove(); document.body.style.overflow = '';
+          }
+        });
+      };
+      item.addEventListener('click', activate);
+      item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') activate(); });
+    });
+  </script>
+</body>
+</html>

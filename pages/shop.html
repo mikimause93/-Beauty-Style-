@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Shop premium beauty products — skincare, makeup, haircare, fragrance and more from the world's top beauty brands." />
+  <title>Beauty Shop — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .shop-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+    .shop-sidebar { position: sticky; top: 100px; background: white; border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-sm); }
+    .filter-section { margin-bottom: 24px; }
+    .filter-title { font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-700); margin-bottom: 12px; }
+    .filter-list { display: flex; flex-direction: column; gap: 8px; }
+    .filter-item { display: flex; align-items: center; gap: 10px; font-size: .88rem; color: var(--gray-600); cursor: pointer; }
+    .filter-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+    .filter-item:hover { color: var(--primary); }
+    .price-range { display: flex; flex-direction: column; gap: 8px; }
+    .range-slider { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .range-values { display: flex; justify-content: space-between; font-size: .8rem; color: var(--gray-500); }
+    .shop-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .shop-count { font-size: .88rem; color: var(--gray-600); }
+    .shop-controls { display: flex; gap: 8px; }
+    .shop-select { padding: 8px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); font-size: .88rem; background: white; cursor: pointer; color: var(--secondary); }
+    .shop-input { padding: 8px 14px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); font-size: .88rem; width: 220px; outline: none; }
+    .shop-input:focus { border-color: var(--primary); }
+    .btn-quick-view { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: white; color: var(--secondary); border: 1.5px solid var(--gray-200); padding: 6px 16px; border-radius: var(--radius-full); font-size: .78rem; font-weight: 600; opacity: 0; transition: var(--transition); white-space: nowrap; cursor: pointer; }
+    .product-image:hover .btn-quick-view { opacity: 1; }
+    .product-image { position: relative; overflow: hidden; }
+    @media (max-width: 900px) { .shop-layout { grid-template-columns: 1fr; } .shop-sidebar { position: static; } }
+    @media (max-width: 600px) { .shop-input { width: 150px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link active">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn" aria-label="Cart">🛒<span class="nav-badge" id="cart-count" style="display:none">0</span></a>
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Beauty Shop</span>
+        <h1 class="page-hero-title">Premium Beauty Products</h1>
+        <p class="page-hero-subtitle">Discover our curated selection of luxury skincare, makeup, haircare, and fragrances from the world's finest brands.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>Shop</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <!-- Category Filter Tabs -->
+        <div class="products-filter" style="margin-bottom:32px;">
+          <button class="filter-btn active" data-filter="all">All Products</button>
+          <button class="filter-btn" data-filter="skincare">Skincare</button>
+          <button class="filter-btn" data-filter="makeup">Makeup</button>
+          <button class="filter-btn" data-filter="haircare">Haircare</button>
+          <button class="filter-btn" data-filter="fragrance">Fragrance</button>
+          <button class="filter-btn" data-filter="tools">Tools</button>
+        </div>
+
+        <div class="shop-layout">
+          <!-- Sidebar Filters -->
+          <aside class="shop-sidebar" aria-label="Filters">
+            <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:20px;">Filters</h3>
+
+            <div class="filter-section">
+              <div class="filter-title">Price Range</div>
+              <div class="price-range">
+                <input type="range" class="range-slider" min="0" max="300" value="300" id="price-max" />
+                <div class="range-values">
+                  <span>€0</span>
+                  <span id="price-max-label">€300</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <div class="filter-title">Brand</div>
+              <div class="filter-list">
+                <label class="filter-item"><input type="checkbox" /> La Mer</label>
+                <label class="filter-item"><input type="checkbox" /> Charlotte Tilbury</label>
+                <label class="filter-item"><input type="checkbox" /> Chanel</label>
+                <label class="filter-item"><input type="checkbox" /> Kérastase</label>
+                <label class="filter-item"><input type="checkbox" /> NARS</label>
+                <label class="filter-item"><input type="checkbox" /> Dior</label>
+                <label class="filter-item"><input type="checkbox" /> Lancôme</label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <div class="filter-title">Skin Type</div>
+              <div class="filter-list">
+                <label class="filter-item"><input type="checkbox" /> All Skin Types</label>
+                <label class="filter-item"><input type="checkbox" /> Dry Skin</label>
+                <label class="filter-item"><input type="checkbox" /> Oily Skin</label>
+                <label class="filter-item"><input type="checkbox" /> Combination</label>
+                <label class="filter-item"><input type="checkbox" /> Sensitive</label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <div class="filter-title">Rating</div>
+              <div class="filter-list">
+                <label class="filter-item"><input type="checkbox" /> ★★★★★ (5 stars)</label>
+                <label class="filter-item"><input type="checkbox" /> ★★★★☆ (4+ stars)</label>
+                <label class="filter-item"><input type="checkbox" /> ★★★☆☆ (3+ stars)</label>
+              </div>
+            </div>
+
+            <button class="btn btn-outline btn-block">Clear All Filters</button>
+          </aside>
+
+          <!-- Products Grid -->
+          <div>
+            <div class="shop-topbar">
+              <span class="shop-count">Showing <strong>12</strong> products</span>
+              <div class="shop-controls">
+                <input type="search" id="shop-search" class="shop-input" placeholder="🔍 Search products..." aria-label="Search products" />
+                <select id="shop-sort" class="shop-select" aria-label="Sort by">
+                  <option value="popular">Most Popular</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name A–Z</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-grid" id="shop-products-grid">
+              <!-- Skincare -->
+              <article class="product-card" data-id="s001" data-category="skincare" data-price="185" data-reviews="248">
+                <div class="product-image">🧴
+                  <span class="product-badge product-badge-new">New</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">La Mer</div>
+                  <h3 class="product-name">Crème de la Mer Moisturizing Cream</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(248)</span></div>
+                  <div class="product-price"><div><span class="price-current">€185</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="s002" data-category="skincare" data-price="72" data-reviews="312">
+                <div class="product-image" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">✨
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Estée Lauder</div>
+                  <h3 class="product-name">Advanced Night Repair Serum</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(312)</span></div>
+                  <div class="product-price"><div><span class="price-current">€72</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="s003" data-category="skincare" data-price="58" data-reviews="198">
+                <div class="product-image" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">💧
+                  <span class="product-badge product-badge-sale">-15%</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Lancôme</div>
+                  <h3 class="product-name">Hydra Zen Anti-Stress Moisturiser</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(198)</span></div>
+                  <div class="product-price"><div><span class="price-current">€49</span><span class="price-original">€58</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <!-- Makeup -->
+              <article class="product-card" data-id="m001" data-category="makeup" data-price="34" data-reviews="512">
+                <div class="product-image" style="background:linear-gradient(135deg,#fce4ec,#f8bbd9)">💄
+                  <span class="product-badge product-badge-popular">Popular</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Charlotte Tilbury</div>
+                  <h3 class="product-name">Matte Revolution Lipstick</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(512)</span></div>
+                  <div class="product-price"><div><span class="price-current">€34</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="m002" data-category="makeup" data-price="44" data-reviews="289">
+                <div class="product-image" style="background:linear-gradient(135deg,#f3e5f5,#ce93d8)">🌸
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">NARS</div>
+                  <h3 class="product-name">Radiant Creamy Concealer</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(289)</span></div>
+                  <div class="product-price"><div><span class="price-current">€44</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="m003" data-category="makeup" data-price="48" data-reviews="176">
+                <div class="product-image" style="background:linear-gradient(135deg,#e8d5b0,#c9a96e)">🏮
+                  <span class="product-badge product-badge-new">New</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Dior</div>
+                  <h3 class="product-name">Forever Natural Nude Foundation</h3>
+                  <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(176)</span></div>
+                  <div class="product-price"><div><span class="price-current">€48</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <!-- Haircare -->
+              <article class="product-card" data-id="h001" data-category="haircare" data-price="46" data-reviews="189">
+                <div class="product-image" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">🌿
+                  <span class="product-badge product-badge-sale">-20%</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Kérastase</div>
+                  <h3 class="product-name">Elixir Ultime Hair Oil</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(189)</span></div>
+                  <div class="product-price"><div><span class="price-current">€46</span><span class="price-original">€58</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="h002" data-category="haircare" data-price="38" data-reviews="143">
+                <div class="product-image" style="background:linear-gradient(135deg,#fffde7,#fff9c4)">💛
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Olaplex</div>
+                  <h3 class="product-name">No.3 Hair Perfector</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(143)</span></div>
+                  <div class="product-price"><div><span class="price-current">€38</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <!-- Fragrance -->
+              <article class="product-card" data-id="f001" data-category="fragrance" data-price="130" data-reviews="876">
+                <div class="product-image" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">🌺
+                  <span class="product-badge product-badge-new">New</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Chanel</div>
+                  <h3 class="product-name">N°5 Eau de Parfum</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(876)</span></div>
+                  <div class="product-price"><div><span class="price-current">€130</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="f002" data-category="fragrance" data-price="95" data-reviews="342">
+                <div class="product-image" style="background:linear-gradient(135deg,#fce4ec,#f48fb1)">🌷
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Dior</div>
+                  <h3 class="product-name">Miss Dior Blooming Bouquet</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(342)</span></div>
+                  <div class="product-price"><div><span class="price-current">€95</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <!-- Tools -->
+              <article class="product-card" data-id="t001" data-category="tools" data-price="29" data-reviews="87">
+                <div class="product-image" style="background:linear-gradient(135deg,#f5f5f5,#e0e0e0)">🪮
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Beautyblender</div>
+                  <h3 class="product-name">Pro Makeup Sponge Set</h3>
+                  <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(87)</span></div>
+                  <div class="product-price"><div><span class="price-current">€29</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+
+              <article class="product-card" data-id="t002" data-category="tools" data-price="65" data-reviews="124">
+                <div class="product-image" style="background:linear-gradient(135deg,#e8eaf6,#c5cae9)">✨
+                  <span class="product-badge product-badge-popular">Popular</span>
+                  <button class="product-wishlist" aria-label="Add to wishlist">♡</button>
+                  <button class="btn-quick-view">Quick View</button>
+                </div>
+                <div class="product-info">
+                  <div class="product-brand">Gua Sha Studio</div>
+                  <h3 class="product-name">Rose Quartz Facial Roller Set</h3>
+                  <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(124)</span></div>
+                  <div class="product-price"><div><span class="price-current">€65</span></div><button class="btn-add-cart">Add to Cart</button></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+  <script src="../js/shop.js"></script>
+  <script>
+    document.getElementById('price-max')?.addEventListener('input', function() {
+      document.getElementById('price-max-label').textContent = '€' + this.value;
+    });
+  </script>
+</body>
+</html>

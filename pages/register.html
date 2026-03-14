@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your Beauty & Style account to book appointments, shop products, and manage your beauty routine." />
+  <title>Create Account — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fdf8f4 0%, #f9f0e8 50%, #fdf5f8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px 40px;
+    }
+    .auth-container { width: 100%; max-width: 520px; }
+    .auth-card { background: white; border-radius: var(--radius-xl); padding: 48px; box-shadow: var(--shadow-xl); }
+    .auth-logo { text-align: center; margin-bottom: 32px; }
+    .auth-title { font-family: var(--font-primary); font-size: 1.8rem; text-align: center; margin-bottom: 8px; }
+    .auth-subtitle { font-size: .9rem; color: var(--gray-500); text-align: center; margin-bottom: 32px; }
+    .benefits-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; padding: 20px; background: rgba(201,169,110,.06); border-radius: var(--radius-lg); }
+    .benefit-item { display: flex; align-items: center; gap: 10px; font-size: .88rem; color: var(--gray-700); }
+    .benefit-icon { color: var(--primary); font-size: 1rem; }
+    .password-strength { margin-top: 6px; }
+    .strength-bar { height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .strength-fill { height: 100%; border-radius: 2px; transition: var(--transition); width: 0%; }
+    .strength-label { font-size: .75rem; color: var(--gray-500); }
+    .auth-footer { text-align: center; margin-top: 24px; font-size: .88rem; color: var(--gray-600); }
+    .auth-footer a { color: var(--primary); font-weight: 600; }
+    .auth-footer a:hover { text-decoration: underline; }
+    .password-wrapper { position: relative; }
+    .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: .9rem; color: var(--gray-500); background: none; border: none; padding: 4px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="booking.html" class="nav-link">Book Now</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <a href="../index.html" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+          <div class="nav-logo-icon" style="width:48px; height:48px; font-size:1.5rem;">✦</div>
+          <span class="nav-logo-text" style="font-size:1.6rem;">Beauty<span>&Style</span></span>
+        </a>
+      </div>
+
+      <div class="auth-card">
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join thousands of beauty lovers today</p>
+
+        <div class="benefits-list">
+          <div class="benefit-item"><span class="benefit-icon">✦</span> Easy online appointment booking</div>
+          <div class="benefit-item"><span class="benefit-icon">✦</span> Exclusive member discounts &amp; offers</div>
+          <div class="benefit-item"><span class="benefit-icon">✦</span> Order history &amp; product wishlist</div>
+          <div class="benefit-item"><span class="benefit-icon">✦</span> Personalized beauty recommendations</div>
+        </div>
+
+        <form id="register-form" novalidate>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="r-firstname">First Name *</label>
+              <input type="text" id="r-firstname" class="form-control" placeholder="Maria" required autocomplete="given-name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="r-lastname">Last Name *</label>
+              <input type="text" id="r-lastname" class="form-control" placeholder="Rossi" required autocomplete="family-name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-email">Email Address *</label>
+            <input type="email" id="r-email" class="form-control" placeholder="maria@example.com" required autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-phone">Phone Number</label>
+            <input type="tel" id="r-phone" class="form-control" placeholder="+39 123 456 7890" autocomplete="tel" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-password">Password *</label>
+            <div class="password-wrapper">
+              <input type="password" id="r-password" class="form-control" placeholder="Create a strong password" required autocomplete="new-password" />
+              <button type="button" class="password-toggle" id="toggle-pwd" aria-label="Toggle password visibility">👁</button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+              <div class="strength-label" id="strength-label">Enter a password</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="r-password2">Confirm Password *</label>
+            <div class="password-wrapper">
+              <input type="password" id="r-password2" class="form-control" placeholder="Repeat your password" required autocomplete="new-password" />
+              <button type="button" class="password-toggle" id="toggle-pwd2" aria-label="Toggle confirm password visibility">👁</button>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:20px; font-size:.85rem; color:var(--gray-600); line-height:1.5;">
+            <input type="checkbox" id="r-terms" style="width:16px; height:16px; accent-color:var(--primary); cursor:pointer; flex-shrink:0; margin-top:2px;" required />
+            <label for="r-terms">I agree to the <a href="#" style="color:var(--primary)">Terms of Service</a> and <a href="#" style="color:var(--primary)">Privacy Policy</a>, and I am at least 16 years old.</label>
+          </div>
+
+          <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:24px; font-size:.85rem; color:var(--gray-600);">
+            <input type="checkbox" id="r-newsletter" style="width:16px; height:16px; accent-color:var(--primary); cursor:pointer; flex-shrink:0; margin-top:2px;" />
+            <label for="r-newsletter">I'd like to receive beauty tips, offers, and updates via email (optional)</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">Create Free Account →</button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="login.html">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    // Password toggle
+    function initPasswordToggle(inputId, btnId) {
+      document.getElementById(btnId)?.addEventListener('click', function() {
+        const input = document.getElementById(inputId);
+        if (input.type === 'password') { input.type = 'text'; this.textContent = '🙈'; }
+        else { input.type = 'password'; this.textContent = '👁'; }
+      });
+    }
+    initPasswordToggle('r-password', 'toggle-pwd');
+    initPasswordToggle('r-password2', 'toggle-pwd2');
+
+    // Password strength
+    document.getElementById('r-password')?.addEventListener('input', function() {
+      const val = this.value;
+      const fill = document.getElementById('strength-fill');
+      const label = document.getElementById('strength-label');
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const configs = [
+        { width: '0%', color: 'var(--gray-200)', text: 'Enter a password' },
+        { width: '25%', color: '#ef5350', text: 'Weak' },
+        { width: '50%', color: '#ff9800', text: 'Fair' },
+        { width: '75%', color: '#66bb6a', text: 'Good' },
+        { width: '100%', color: '#2e7d32', text: 'Strong ✓' },
+      ];
+      const c = configs[val.length === 0 ? 0 : score] || configs[0];
+      fill.style.width = c.width;
+      fill.style.background = c.color;
+      label.textContent = c.text;
+      label.style.color = c.color;
+    });
+
+    // Form submission
+    document.getElementById('register-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('r-firstname').value.trim();
+      const lastName = document.getElementById('r-lastname').value.trim();
+      const email = document.getElementById('r-email').value.trim();
+      const password = document.getElementById('r-password').value;
+      const password2 = document.getElementById('r-password2').value;
+      const terms = document.getElementById('r-terms').checked;
+
+      if (!firstName || !lastName) { window.BS?.showToast('Please enter your full name', 'error'); return; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { window.BS?.showToast('Please enter a valid email', 'error'); return; }
+      if (password.length < 8) { window.BS?.showToast('Password must be at least 8 characters', 'error'); return; }
+      if (password !== password2) { window.BS?.showToast('Passwords do not match', 'error'); return; }
+      if (!terms) { window.BS?.showToast('Please accept the Terms of Service', 'error'); return; }
+
+      window.BS?.showToast(`Account created! Welcome, ${firstName}! 🎉`, 'success');
+      setTimeout(() => { window.location.href = 'profile.html'; }, 1200);
+    });
+  </script>
+</body>
+</html>

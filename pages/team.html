@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Meet our expert team of beauty professionals — hair stylists, makeup artists, skincare specialists, and nail technicians." />
+  <title>Our Team — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .team-full-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      transition: var(--transition);
+    }
+    .team-full-card:hover { box-shadow: var(--shadow-lg); }
+    .team-full-image {
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+    }
+    .team-full-body { padding: 32px; }
+    .team-cert { display: inline-block; background: rgba(201,169,110,.12); color: var(--primary-dark); padding: 4px 12px; border-radius: var(--radius-full); font-size: .75rem; font-weight: 600; margin-right: 6px; margin-bottom: 6px; }
+    .team-stat { text-align: center; }
+    .team-stat-num { font-family: var(--font-primary); font-size: 1.5rem; font-weight: 700; color: var(--secondary); }
+    .team-stat-lbl { font-size: .75rem; color: var(--gray-500); margin-top: 2px; }
+    @media (max-width: 700px) {
+      .team-full-card { grid-template-columns: 1fr; }
+      .team-full-image { min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link active">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn">♡</a>
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Our Experts</span>
+        <h1 class="page-hero-title">Meet Our Beauty Team</h1>
+        <p class="page-hero-subtitle">Passionate, skilled, and dedicated — our beauty professionals bring years of expertise and artistry to every appointment.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>Our Team</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--off-white)">
+      <div class="container" style="display:flex; flex-direction:column; gap:28px;">
+
+        <article class="team-full-card">
+          <div class="team-full-image" style="background:linear-gradient(135deg,#fdf0e0,#fce4ec)">👩‍🦰</div>
+          <div class="team-full-body">
+            <h2 style="font-family:var(--font-primary); font-size:1.5rem; margin-bottom:4px;">Sofia Rossi</h2>
+            <div style="color:var(--primary); font-weight:700; margin-bottom:16px;">Senior Hair Stylist &amp; Colorist</div>
+            <p style="font-size:.92rem; color:var(--gray-600); line-height:1.8; margin-bottom:20px;">With over 12 years of experience in precision cutting and advanced color techniques, Sofia is our most sought-after hair specialist. She studied at the Vidal Sassoon Academy in London and has since worked with high-profile clients across Europe. Her signature approach combines technical mastery with a deep understanding of each client's unique style and lifestyle needs.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+              <div>
+                <div style="font-size:.78rem; color:var(--gray-500); font-weight:600; letter-spacing:.5px; margin-bottom:8px;">CERTIFICATIONS</div>
+                <span class="team-cert">Vidal Sassoon Certified</span>
+                <span class="team-cert">Balayage Specialist</span>
+                <span class="team-cert">Keratin Treatment</span>
+                <span class="team-cert">Color Correction</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:32px; margin-bottom:24px;">
+              <div class="team-stat"><div class="team-stat-num">12+</div><div class="team-stat-lbl">Years Experience</div></div>
+              <div class="team-stat"><div class="team-stat-num">2k+</div><div class="team-stat-lbl">Clients Served</div></div>
+              <div class="team-stat"><div class="team-stat-num">4.9</div><div class="team-stat-lbl">Avg Rating</div></div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a href="booking.html" class="btn btn-primary btn-sm">Book with Sofia</a>
+              <a href="#" class="btn btn-outline btn-sm">View Portfolio</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="team-full-card">
+          <div class="team-full-image" style="background:linear-gradient(135deg,#f8e1f4,#e1bee7)">👩‍🦱</div>
+          <div class="team-full-body">
+            <h2 style="font-family:var(--font-primary); font-size:1.5rem; margin-bottom:4px;">Isabella Marino</h2>
+            <div style="color:var(--primary); font-weight:700; margin-bottom:16px;">Lead Makeup Artist</div>
+            <p style="font-size:.92rem; color:var(--gray-600); line-height:1.8; margin-bottom:20px;">Isabella is a globally recognized makeup artist who has worked on editorial shoots, fashion weeks, and celebrity events. A graduate of the MAKE UP FOR EVER Academy in Paris, she brings a sophisticated, high-fashion sensibility to every client. Her specialties include bridal makeup, editorial looks, and transformative special effects artistry.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+              <div>
+                <div style="font-size:.78rem; color:var(--gray-500); font-weight:600; letter-spacing:.5px; margin-bottom:8px;">CERTIFICATIONS</div>
+                <span class="team-cert">MUFE Academy Graduate</span>
+                <span class="team-cert">Bridal Specialist</span>
+                <span class="team-cert">SFX Makeup</span>
+                <span class="team-cert">Airbrush Technique</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:32px; margin-bottom:24px;">
+              <div class="team-stat"><div class="team-stat-num">8+</div><div class="team-stat-lbl">Years Experience</div></div>
+              <div class="team-stat"><div class="team-stat-num">800+</div><div class="team-stat-lbl">Clients Served</div></div>
+              <div class="team-stat"><div class="team-stat-num">5.0</div><div class="team-stat-lbl">Avg Rating</div></div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a href="booking.html" class="btn btn-primary btn-sm">Book with Isabella</a>
+              <a href="#" class="btn btn-outline btn-sm">View Portfolio</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="team-full-card">
+          <div class="team-full-image" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">👩</div>
+          <div class="team-full-body">
+            <h2 style="font-family:var(--font-primary); font-size:1.5rem; margin-bottom:4px;">Laura Conti</h2>
+            <div style="color:var(--primary); font-weight:700; margin-bottom:16px;">Skincare Specialist &amp; Esthetician</div>
+            <p style="font-size:.92rem; color:var(--gray-600); line-height:1.8; margin-bottom:20px;">Laura is a licensed esthetician with deep expertise in clinical skincare and holistic wellness. She holds advanced certifications in chemical peels, microdermabrasion, and LED light therapy. Laura takes a science-based approach to skincare, creating customized treatment plans that deliver real, visible results for her clients.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+              <div>
+                <div style="font-size:.78rem; color:var(--gray-500); font-weight:600; letter-spacing:.5px; margin-bottom:8px;">CERTIFICATIONS</div>
+                <span class="team-cert">Licensed Esthetician</span>
+                <span class="team-cert">Chemical Peels</span>
+                <span class="team-cert">LED Therapy</span>
+                <span class="team-cert">Microdermabrasion</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:32px; margin-bottom:24px;">
+              <div class="team-stat"><div class="team-stat-num">10+</div><div class="team-stat-lbl">Years Experience</div></div>
+              <div class="team-stat"><div class="team-stat-num">1.5k+</div><div class="team-stat-lbl">Clients Served</div></div>
+              <div class="team-stat"><div class="team-stat-num">4.8</div><div class="team-stat-lbl">Avg Rating</div></div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a href="booking.html" class="btn btn-primary btn-sm">Book with Laura</a>
+              <a href="#" class="btn btn-outline btn-sm">View Portfolio</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="team-full-card">
+          <div class="team-full-image" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">👩‍🦳</div>
+          <div class="team-full-body">
+            <h2 style="font-family:var(--font-primary); font-size:1.5rem; margin-bottom:4px;">Chiara Ferrari</h2>
+            <div style="color:var(--primary); font-weight:700; margin-bottom:16px;">Senior Nail Technician &amp; Artist</div>
+            <p style="font-size:.92rem; color:var(--gray-600); line-height:1.8; margin-bottom:20px;">Chiara is a nail artistry virtuoso who transforms nails into miniature works of art. With training from top nail academies in Tokyo and New York, she excels in hand-painted nail art, complex gel sculptures, and the latest trend techniques. Her meticulous attention to detail and creative vision make her one of Italy's most sought-after nail technicians.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+              <div>
+                <div style="font-size:.78rem; color:var(--gray-500); font-weight:600; letter-spacing:.5px; margin-bottom:8px;">CERTIFICATIONS</div>
+                <span class="team-cert">CND Shellac Certified</span>
+                <span class="team-cert">Nail Art Expert</span>
+                <span class="team-cert">Acrylic Sculpting</span>
+                <span class="team-cert">Gel Extensions</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:32px; margin-bottom:24px;">
+              <div class="team-stat"><div class="team-stat-num">7+</div><div class="team-stat-lbl">Years Experience</div></div>
+              <div class="team-stat"><div class="team-stat-num">1k+</div><div class="team-stat-lbl">Clients Served</div></div>
+              <div class="team-stat"><div class="team-stat-num">4.9</div><div class="team-stat-lbl">Avg Rating</div></div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <a href="booking.html" class="btn btn-primary btn-sm">Book with Chiara</a>
+              <a href="#" class="btn btn-outline btn-sm">View Portfolio</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="promo-section">
+      <div class="container">
+        <span class="promo-tag">Join the Team</span>
+        <h2 class="promo-title">Are You a Beauty Professional?</h2>
+        <p class="promo-subtitle">We're always looking for talented, passionate beauty experts to join our growing team.</p>
+        <a href="contact.html" class="btn btn-outline-white btn-lg">Get in Touch</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Beauty & Style — our story, mission, values, and what makes us the premier beauty and style destination." />
+  <title>About Us — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .value-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .value-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .value-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .milestone { display: flex; align-items: flex-start; gap: 20px; }
+    .milestone-year { font-family: var(--font-primary); font-size: 1.2rem; font-weight: 700; color: var(--primary); min-width: 60px; }
+    .milestone-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .milestone-content p { font-size: .88rem; color: var(--gray-600); margin: 0; }
+    .milestone-dot { width: 12px; height: 12px; background: var(--primary); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-image { border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-xl); }
+    .about-image-inner { height: 480px; background: linear-gradient(135deg, var(--primary-light), var(--rose)); display: flex; align-items: center; justify-content: center; font-size: 8rem; }
+    @media (max-width: 900px) { .about-split { grid-template-columns: 1fr; } .about-image-inner { height: 280px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="about.html" class="nav-link active">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn">♡</a>
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Our Story</span>
+        <h1 class="page-hero-title">About Beauty &amp; Style</h1>
+        <p class="page-hero-subtitle">Born from a passion for beauty and a commitment to excellence — we're here to help you look and feel your absolute best.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>About</span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="section">
+      <div class="container">
+        <div class="about-split">
+          <div>
+            <span class="section-tag">Who We Are</span>
+            <h2 style="font-family:var(--font-primary); font-size:clamp(1.8rem,3.5vw,2.5rem); margin-bottom:20px; margin-top:12px;">A Sanctuary of Beauty &amp; Self-Expression</h2>
+            <p style="font-size:1rem; color:var(--gray-600); line-height:1.9; margin-bottom:16px;">Founded in 2012 in the heart of Milan, Beauty &amp; Style began as a small boutique salon with a big vision: to create a space where every client could discover their most confident, beautiful self. What started as a two-person team has grown into a full-service beauty destination with over 12 specialists across every discipline of beauty and wellness.</p>
+            <p style="font-size:1rem; color:var(--gray-600); line-height:1.9; margin-bottom:28px;">We believe that beauty is deeply personal. Our approach is never one-size-fits-all — every treatment, every recommendation, and every appointment is tailored to the unique individual sitting in our chair. We combine technical mastery with genuine care, and that philosophy has made us one of the most trusted beauty destinations in Northern Italy.</p>
+            <div style="display:flex; gap:40px; flex-wrap:wrap;">
+              <div class="team-stat">
+                <div class="team-stat-num" style="font-size:2rem;">14+</div>
+                <div class="team-stat-lbl">Years in Business</div>
+              </div>
+              <div class="team-stat">
+                <div class="team-stat-num" style="font-size:2rem;">5k+</div>
+                <div class="team-stat-lbl">Happy Clients</div>
+              </div>
+              <div class="team-stat">
+                <div class="team-stat-num" style="font-size:2rem;">12</div>
+                <div class="team-stat-lbl">Expert Specialists</div>
+              </div>
+              <div class="team-stat">
+                <div class="team-stat-num" style="font-size:2rem;">98%</div>
+                <div class="team-stat-lbl">Satisfaction Rate</div>
+              </div>
+            </div>
+          </div>
+          <div class="about-image">
+            <div class="about-image-inner">✦</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">What Drives Us</span>
+          <h2 class="section-title">Our Core Values</h2>
+          <div class="divider"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+          <div class="value-card">
+            <div class="value-icon">💎</div>
+            <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:10px;">Excellence</h3>
+            <p style="font-size:.88rem; color:var(--gray-600); line-height:1.7;">We set the highest standards in every treatment, product, and client interaction — excellence is our baseline.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🌿</div>
+            <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:10px;">Sustainability</h3>
+            <p style="font-size:.88rem; color:var(--gray-600); line-height:1.7;">We prioritize eco-conscious products, minimize waste, and partner with brands that share our environmental values.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">💝</div>
+            <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:10px;">Inclusivity</h3>
+            <p style="font-size:.88rem; color:var(--gray-600); line-height:1.7;">Beauty belongs to everyone. We celebrate diversity and ensure every client feels welcome, seen, and celebrated.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🎓</div>
+            <h3 style="font-family:var(--font-primary); font-size:1.1rem; margin-bottom:10px;">Innovation</h3>
+            <p style="font-size:.88rem; color:var(--gray-600); line-height:1.7;">We stay at the forefront of beauty through continuous education, the latest techniques, and cutting-edge tools.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Journey -->
+    <section class="section">
+      <div class="container">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px;">
+          <div>
+            <span class="section-tag">Our Journey</span>
+            <h2 style="font-family:var(--font-primary); font-size:clamp(1.6rem,3vw,2.2rem); margin:12px 0 28px;">From Humble Beginnings<br>to Industry Leaders</h2>
+            <div style="display:flex; flex-direction:column; gap:0; position:relative; padding-left:30px; border-left:2px solid var(--primary-light);">
+              <div class="milestone" style="margin-bottom:24px;">
+                <div>
+                  <div class="milestone-year">2012</div>
+                  <div class="milestone-content">
+                    <h4>Beauty &amp; Style Opens</h4>
+                    <p>Founded by two passionate stylists in Milan's fashion district, offering hair and makeup services.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="milestone" style="margin-bottom:24px;">
+                <div>
+                  <div class="milestone-year">2015</div>
+                  <div class="milestone-content">
+                    <h4>Expanded to Full-Service Salon</h4>
+                    <p>Added skincare, nail care, and wellness services. Team grew to 6 specialists.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="milestone" style="margin-bottom:24px;">
+                <div>
+                  <div class="milestone-year">2018</div>
+                  <div class="milestone-content">
+                    <h4>Launched Online Shop</h4>
+                    <p>Expanded our premium product offering online, serving clients across Europe.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="milestone" style="margin-bottom:24px;">
+                <div>
+                  <div class="milestone-year">2021</div>
+                  <div class="milestone-content">
+                    <h4>Award-Winning Salon</h4>
+                    <p>Named "Best Beauty Salon in Northern Italy" by Beauty Magazine for the second consecutive year.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="milestone">
+                <div>
+                  <div class="milestone-year">2026</div>
+                  <div class="milestone-content">
+                    <h4>Digital Platform Launch</h4>
+                    <p>Launched our complete beauty platform with online booking, shop, and client portal.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="section-tag">Recognition</span>
+            <h2 style="font-family:var(--font-primary); font-size:clamp(1.6rem,3vw,2.2rem); margin:12px 0 28px;">Awards &amp; Achievements</h2>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; align-items:center; gap:16px; padding:20px; background:var(--off-white); border-radius:var(--radius-lg);">
+                <span style="font-size:2rem;">🏆</span>
+                <div>
+                  <div style="font-weight:700; color:var(--secondary);">Best Beauty Salon — Italy</div>
+                  <div style="font-size:.82rem; color:var(--gray-500);">Beauty Magazine Awards, 2020 &amp; 2021</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; padding:20px; background:var(--off-white); border-radius:var(--radius-lg);">
+                <span style="font-size:2rem;">⭐</span>
+                <div>
+                  <div style="font-weight:700; color:var(--secondary);">5-Star Excellence Rating</div>
+                  <div style="font-size:.82rem; color:var(--gray-500);">Google Reviews — 200+ verified reviews</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; padding:20px; background:var(--off-white); border-radius:var(--radius-lg);">
+                <span style="font-size:2rem;">🌿</span>
+                <div>
+                  <div style="font-weight:700; color:var(--secondary);">Eco-Conscious Beauty Certification</div>
+                  <div style="font-size:.82rem; color:var(--gray-500);">Green Beauty Alliance, 2023</div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:16px; padding:20px; background:var(--off-white); border-radius:var(--radius-lg);">
+                <span style="font-size:2rem;">📰</span>
+                <div>
+                  <div style="font-weight:700; color:var(--secondary);">Featured in Vogue Italia</div>
+                  <div style="font-size:.82rem; color:var(--gray-500);">"Milan's Hidden Beauty Gems" — February 2025</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-section">
+      <div class="container">
+        <span class="promo-tag">Experience the Difference</span>
+        <h2 class="promo-title">Ready to Be Transformed?</h2>
+        <p class="promo-subtitle">Join thousands of satisfied clients who have discovered their best selves with Beauty &amp; Style.</p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+          <a href="booking.html" class="btn btn-outline-white btn-lg">Book Appointment</a>
+          <a href="contact.html" class="btn btn-outline-white btn-lg">Contact Us</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>

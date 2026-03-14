@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Beauty & Style blog — expert beauty tips, trends, tutorials, and advice from our professional team." />
+  <title>Blog — Beauty &amp; Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .blog-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: start; }
+    .blog-sidebar { position: sticky; top: 100px; }
+    .sidebar-widget { background: white; border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+    .sidebar-widget-title { font-family: var(--font-primary); font-size: 1.05rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--primary-light); }
+    .category-list { display: flex; flex-direction: column; gap: 6px; }
+    .category-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: var(--radius-md); cursor: pointer; font-size: .88rem; transition: var(--transition); }
+    .category-item:hover { background: rgba(201,169,110,.08); color: var(--primary); }
+    .category-count { background: var(--gray-100); color: var(--gray-600); padding: 2px 8px; border-radius: var(--radius-full); font-size: .72rem; font-weight: 600; }
+    .popular-post { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+    .popular-post:last-child { border-bottom: none; }
+    .popular-post-image { width: 64px; height: 64px; border-radius: var(--radius-md); background: linear-gradient(135deg,var(--primary-light),var(--rose)); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .popular-post-title { font-size: .85rem; font-weight: 600; color: var(--secondary); line-height: 1.4; margin-bottom: 4px; }
+    .popular-post-date { font-size: .75rem; color: var(--gray-500); }
+    .blog-featured { background: white; border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 28px; display: grid; grid-template-columns: 1fr 1fr; }
+    .blog-featured-image { background: linear-gradient(135deg,var(--primary-light),var(--rose)); display: flex; align-items: center; justify-content: center; font-size: 7rem; min-height: 320px; }
+    .blog-featured-content { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+    @media (max-width: 900px) { .blog-layout { grid-template-columns: 1fr; } .blog-sidebar { position: static; } .blog-featured { grid-template-columns: 1fr; } .blog-featured-image { min-height: 200px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../index.html" class="nav-logo">
+        <div class="nav-logo-icon">✦</div>
+        <span class="nav-logo-text">Beauty<span>&Style</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="../index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="team.html" class="nav-link">Team</a></li>
+        <li><a href="blog.html" class="nav-link active">Blog</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="shop.html" class="nav-icon-btn">♡</a>
+        <a href="login.html" class="nav-icon-btn">👤</a>
+        <a href="booking.html" class="nav-btn-book">Book Now</a>
+        <button class="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="../index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="services.html" class="mobile-nav-link">💆 Services</a>
+    <a href="shop.html" class="mobile-nav-link">🛍️ Shop</a>
+    <a href="gallery.html" class="mobile-nav-link">📸 Gallery</a>
+    <a href="team.html" class="mobile-nav-link">👩‍💼 Our Team</a>
+    <a href="blog.html" class="mobile-nav-link">📝 Blog</a>
+    <a href="about.html" class="mobile-nav-link">ℹ️ About</a>
+    <a href="contact.html" class="mobile-nav-link">📞 Contact</a>
+    <div class="mobile-nav-actions">
+      <a href="login.html" class="btn btn-outline btn-block">Sign In</a>
+      <a href="booking.html" class="btn btn-primary btn-block">Book Appointment</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-tag">Beauty Insights</span>
+        <h1 class="page-hero-title">Tips, Trends &amp; Tutorials</h1>
+        <p class="page-hero-subtitle">Expert beauty advice, the latest trends, and behind-the-scenes insights from our team of beauty professionals.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../index.html">Home</a><span>›</span><span>Blog</span>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--off-white)">
+      <div class="container">
+        <!-- Featured Article -->
+        <article class="blog-featured">
+          <div class="blog-featured-image">🌸</div>
+          <div class="blog-featured-content">
+            <span style="font-size:.72rem; font-weight:700; letter-spacing:2px; color:var(--primary); text-transform:uppercase; background:rgba(201,169,110,.1); padding:4px 12px; border-radius:20px; display:inline-block; margin-bottom:16px;">✦ Featured Article</span>
+            <h2 style="font-family:var(--font-primary); font-size:1.6rem; color:var(--secondary); margin-bottom:12px; line-height:1.3;">The Ultimate Spring Beauty Reset: Transform Your Routine in 7 Days</h2>
+            <div style="display:flex; gap:16px; margin-bottom:14px; flex-wrap:wrap;">
+              <span style="font-size:.8rem; color:var(--gray-500);">📅 March 10, 2026</span>
+              <span style="font-size:.8rem; color:var(--gray-500);">👤 Laura Conti</span>
+              <span style="font-size:.8rem; color:var(--gray-500);">⏱ 8 min read</span>
+            </div>
+            <p style="font-size:.92rem; color:var(--gray-600); line-height:1.8; margin-bottom:24px;">Spring is the perfect time to refresh your beauty routine. From updating your skincare regime to experimenting with new color trends, discover how our experts recommend transitioning into the season with radiant, revitalized skin and updated looks.</p>
+            <a href="#" class="btn btn-primary">Read Full Article</a>
+          </div>
+        </article>
+
+        <div class="blog-layout">
+          <!-- Articles Grid -->
+          <div>
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:24px;">
+              <article class="blog-card">
+                <div class="blog-image">✂️<span class="blog-category">Hair</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 March 5, 2026</span>
+                    <span>👤 Sofia Rossi</span>
+                  </div>
+                  <h3 class="blog-title">2026 Hair Color Trends: From Buttery Blondes to Rich Brunettes</h3>
+                  <p class="blog-excerpt">This year's top hair color trends are all about dimensional, natural-looking hues that enhance your features.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+
+              <article class="blog-card">
+                <div class="blog-image" style="background:linear-gradient(135deg,#fce4ec,#f8bbd9)">💄<span class="blog-category">Makeup</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 Feb 28, 2026</span>
+                    <span>👤 Isabella Marino</span>
+                  </div>
+                  <h3 class="blog-title">The Art of No-Makeup Makeup: Effortless Beauty</h3>
+                  <p class="blog-excerpt">Master the illusion of "natural" beauty with pro techniques and the right products for a polished look.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+
+              <article class="blog-card">
+                <div class="blog-image" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">💅<span class="blog-category">Nails</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 Feb 20, 2026</span>
+                    <span>👤 Chiara Ferrari</span>
+                  </div>
+                  <h3 class="blog-title">Nail Trends 2026: Minimalist to Maximalist Art</h3>
+                  <p class="blog-excerpt">From simple, elegant minimalist designs to intricate 3D nail art — explore what's defining nails this year.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+
+              <article class="blog-card">
+                <div class="blog-image" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">🌿<span class="blog-category">Wellness</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 Feb 15, 2026</span>
+                    <span>👤 Laura Conti</span>
+                  </div>
+                  <h3 class="blog-title">The Power of Facial Massage: Sculpt &amp; Glow Naturally</h3>
+                  <p class="blog-excerpt">Discover how a simple daily facial massage routine can boost circulation, reduce puffiness, and enhance radiance.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+
+              <article class="blog-card">
+                <div class="blog-image" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)">🏮<span class="blog-category">Skincare</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 Feb 8, 2026</span>
+                    <span>👤 Laura Conti</span>
+                  </div>
+                  <h3 class="blog-title">Understanding Your Skin Type: A Complete Guide</h3>
+                  <p class="blog-excerpt">Confused about your skin type? Our skincare specialist breaks down the essential characteristics and what products truly work.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+
+              <article class="blog-card">
+                <div class="blog-image" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)">👰<span class="blog-category">Bridal</span></div>
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <span>📅 Feb 1, 2026</span>
+                    <span>👤 Isabella Marino</span>
+                  </div>
+                  <h3 class="blog-title">Bridal Beauty Timeline: Your Complete Wedding Day Guide</h3>
+                  <p class="blog-excerpt">Everything you need to know about planning your bridal beauty — from trials to touch-ups on the big day.</p>
+                  <a href="#" class="blog-read-more">Read Article →</a>
+                </div>
+              </article>
+            </div>
+
+            <div class="text-center mt-xl">
+              <button class="btn btn-outline">Load More Articles</button>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="blog-sidebar">
+            <div class="sidebar-widget">
+              <h3 class="sidebar-widget-title">Search</h3>
+              <input type="search" class="form-control" placeholder="🔍 Search articles..." aria-label="Search blog" />
+            </div>
+
+            <div class="sidebar-widget">
+              <h3 class="sidebar-widget-title">Categories</h3>
+              <div class="category-list">
+                <div class="category-item">Skincare <span class="category-count">12</span></div>
+                <div class="category-item">Hair <span class="category-count">9</span></div>
+                <div class="category-item">Makeup <span class="category-count">8</span></div>
+                <div class="category-item">Nails <span class="category-count">6</span></div>
+                <div class="category-item">Wellness <span class="category-count">7</span></div>
+                <div class="category-item">Bridal <span class="category-count">4</span></div>
+                <div class="category-item">Trends <span class="category-count">11</span></div>
+              </div>
+            </div>
+
+            <div class="sidebar-widget">
+              <h3 class="sidebar-widget-title">Popular Posts</h3>
+              <div class="popular-post">
+                <div class="popular-post-image">🌸</div>
+                <div>
+                  <div class="popular-post-title">Spring Skincare Routine Essentials</div>
+                  <div class="popular-post-date">March 10, 2026</div>
+                </div>
+              </div>
+              <div class="popular-post">
+                <div class="popular-post-image" style="background:linear-gradient(135deg,#f8e1f4,#e1bee7)">💄</div>
+                <div>
+                  <div class="popular-post-title">No-Makeup Makeup Tutorial</div>
+                  <div class="popular-post-date">Feb 28, 2026</div>
+                </div>
+              </div>
+              <div class="popular-post">
+                <div class="popular-post-image" style="background:linear-gradient(135deg,#e8d5b0,#c9a96e)">✂️</div>
+                <div>
+                  <div class="popular-post-title">2026 Hair Color Trends</div>
+                  <div class="popular-post-date">March 5, 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-widget" style="background:linear-gradient(135deg,var(--rose),var(--primary)); color:white;">
+              <h3 style="color:white; font-family:var(--font-primary); margin-bottom:8px;">Book Your Appointment</h3>
+              <p style="font-size:.85rem; opacity:.9; margin-bottom:16px;">Ready to try a new look? Book with one of our experts.</p>
+              <a href="booking.html" class="btn btn-outline-white btn-sm btn-block">Reserve Now</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none; padding-top:0;">
+        <p class="footer-copyright">© 2026 Beauty &amp; Style. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="../index.html">Home</a>
+          <a href="contact.html">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <button class="scroll-top" aria-label="Scroll to top">↑</button>
+  <script src="../js/main.js"></script>
+</body>
+</html>
