@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ai-style-service:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3011:3011"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - AI_STYLE_PORT=3011
+      - DATABASE_URL=${DATABASE_URL}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_KEY=${S3_KEY}
+      - S3_SECRET=${S3_SECRET}
+      - S3_REGION=${S3_REGION}
+      - S3_ENDPOINT=${S3_ENDPOINT:-}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3011/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  ai-style-worker:
+    build:
+      context: ./backend/services/ai-style-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: ["node", "src/worker.js"]
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DATABASE_URL=${DATABASE_URL}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_KEY=${S3_KEY}
+      - S3_SECRET=${S3_SECRET}
+      - S3_REGION=${S3_REGION}
+      - S3_ENDPOINT=${S3_ENDPOINT:-}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+      - STABILITY_API_KEY=${STABILITY_API_KEY}
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:

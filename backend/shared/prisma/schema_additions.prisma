@@ -1,0 +1,27 @@
+/*
+  ──────────────────────────────────────────────────────────────────────────────
+  Prisma schema additions — GeneratedLook model
+  ──────────────────────────────────────────────────────────────────────────────
+  Append the block below to your existing backend/shared/prisma/schema.prisma.
+  Requires that User and Booking models are already defined in the same schema.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+model GeneratedLook {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalUrl String
+  resultUrls  String[] @default([])
+  preset      String?
+  params      Json?
+  provider    String?
+  costCredits Float    @default(0)
+  saved       Boolean  @default(false)
+  bookingId   String?
+  booking     Booking? @relation(fields: [bookingId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}

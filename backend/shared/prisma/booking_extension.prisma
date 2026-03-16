@@ -1,0 +1,33 @@
+/*
+  ──────────────────────────────────────────────────────────────────────────────
+  Prisma schema additions — Booking model extension
+  ──────────────────────────────────────────────────────────────────────────────
+  Add the `generatedLookId` optional field and `generatedLook` relation to your
+  existing Booking model in backend/shared/prisma/schema.prisma.
+  ──────────────────────────────────────────────────────────────────────────────
+*/
+
+// Modify the existing Booking model to add:
+//
+//   generatedLookId  String?        // optional link to an AI-generated look
+//   generatedLook    GeneratedLook? @relation(fields: [generatedLookId], references: [id])
+//
+// Full reference model (adapt to match your existing fields):
+
+model Booking {
+  id              String        @id @default(cuid())
+  clientId        String
+  client          User          @relation(fields: [clientId], references: [id])
+  professionalId  String
+  professional    Professional  @relation(fields: [professionalId], references: [id])
+  date            DateTime
+  startTime       String
+  status          BookingStatus @default(PENDING)
+  totalPrice      Float
+  generatedLookId String?
+  generatedLook   GeneratedLook? @relation(fields: [generatedLookId], references: [id])
+  createdAt       DateTime      @default(now())
+
+  @@index([clientId])
+  @@index([date])
+}
