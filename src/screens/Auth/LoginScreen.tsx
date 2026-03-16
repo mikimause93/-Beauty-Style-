@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -17,32 +17,37 @@ export function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef<TextInput>(null);
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Errore', 'Compila tutti i campi');
       return;
     }
     setLoading(true);
-    const success = await login(email.trim(), password);
+    const result = await login(email.trim(), password);
     setLoading(false);
-    if (!success) {
-      Alert.alert('Login Failed', 'Please check your credentials and try again');
+    if (!result.success) {
+      Alert.alert('Accesso fallito', result.error ?? 'Controlla le credenziali e riprova');
     }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.header}>
           <Text style={styles.logo}>💄</Text>
-          <Text style={styles.appName}>Beauty & Style</Text>
+          <Text style={styles.appName}>Beauty &amp; Style</Text>
           <Text style={styles.tagline}>Your personal beauty companion</Text>
         </LinearGradient>
 
         <View style={styles.form}>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to continue</Text>
+          <Text style={styles.title}>Bentornata</Text>
+          <Text style={styles.subtitle}>Accedi per continuare</Text>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
@@ -50,11 +55,14 @@ export function LoginScreen() {
               style={styles.input}
               value={email}
               onChangeText={setEmail}
-              placeholder="your@email.com"
+              placeholder="tua@email.com"
               placeholderTextColor={COLORS.gray}
               keyboardType="email-address"
               autoCapitalize="none"
               autoComplete="email"
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              blurOnSubmit={false}
             />
           </View>
 
@@ -62,13 +70,16 @@ export function LoginScreen() {
             <Text style={styles.label}>Password</Text>
             <View style={styles.passwordContainer}>
               <TextInput
+                ref={passwordRef}
                 style={[styles.input, { flex: 1, borderWidth: 0 }]}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Enter password"
+                placeholder="Inserisci la password"
                 placeholderTextColor={COLORS.gray}
                 secureTextEntry={!showPassword}
                 autoComplete="password"
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
               />
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                 <Text style={{ fontSize: 18 }}>{showPassword ? '🙈' : '👁️'}</Text>
@@ -77,20 +88,20 @@ export function LoginScreen() {
           </View>
 
           <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgotButton}>
-            <Text style={styles.forgotText}>Forgot Password?</Text>
+            <Text style={styles.forgotText}>Password dimenticata?</Text>
           </TouchableOpacity>
 
-          <Button title="Sign In" onPress={handleLogin} loading={loading} style={styles.loginButton} />
+          <Button title="Accedi" onPress={handleLogin} loading={loading} style={styles.loginButton} />
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>or</Text>
+            <Text style={styles.dividerText}>oppure</Text>
             <View style={styles.dividerLine} />
           </View>
 
           <TouchableOpacity style={styles.registerButton} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.registerText}>
-              {"Don't have an account? "}<Text style={styles.registerLink}>Sign Up</Text>
+              {'Non hai un account? '}<Text style={styles.registerLink}>Registrati</Text>
             </Text>
           </TouchableOpacity>
         </View>

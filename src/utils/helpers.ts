@@ -61,3 +61,11 @@ export function getDatesForMonth(year: number, month: number): Date[] {
   }
   return dates;
 }
+
+/**
+ * Returns true when the string is a plausible email address.
+ * Uses a liberal RFC-5322-inspired pattern: local@domain.tld
+ */
+export function validateEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../../components/common/Header';
 import { Button } from '../../components/common/Button';
@@ -13,7 +13,7 @@ export function ForgotPasswordScreen() {
 
   const handleReset = async () => {
     if (!email.trim()) {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert('Errore', 'Inserisci il tuo indirizzo email');
       return;
     }
     setLoading(true);
@@ -26,42 +26,50 @@ export function ForgotPasswordScreen() {
     return (
       <View style={styles.successContainer}>
         <Text style={styles.successEmoji}>📧</Text>
-        <Text style={styles.successTitle}>Check Your Email</Text>
+        <Text style={styles.successTitle}>Controlla la tua email</Text>
         <Text style={styles.successText}>
-          {"We've sent a password reset link to "}{email}{". Please check your inbox."}
+          {'Abbiamo inviato un link per reimpostare la password a '}{email}{'. Controlla la tua casella di posta.'}
         </Text>
-        <Button title="Back to Login" onPress={() => navigation.goBack()} style={{ marginTop: SIZES.xl }} />
+        <Button title="Torna al login" onPress={() => navigation.goBack()} style={{ marginTop: SIZES.xl }} />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Header title="Reset Password" showBack />
-      <View style={styles.content}>
-        <Text style={styles.emoji}>🔐</Text>
-        <Text style={styles.title}>Forgot Password?</Text>
-        <Text style={styles.subtitle}>{"Enter your email and we'll send you a reset link"}</Text>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email Address</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="your@email.com"
-            placeholderTextColor={COLORS.gray}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+        <Header title="Reimposta password" showBack />
+        <View style={styles.content}>
+          <Text style={styles.emoji}>🔐</Text>
+          <Text style={styles.title}>Password dimenticata?</Text>
+          <Text style={styles.subtitle}>{'Inserisci la tua email e ti invieremo un link per reimpostare la password'}</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Indirizzo email</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="tua@email.com"
+              placeholderTextColor={COLORS.gray}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              returnKeyType="done"
+              onSubmitEditing={handleReset}
+            />
+          </View>
+          <Button title="Invia link di reset" onPress={handleReset} loading={loading} />
         </View>
-        <Button title="Send Reset Link" onPress={handleReset} loading={loading} />
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
+  root: { flex: 1, backgroundColor: COLORS.white },
   content: { padding: SIZES.xl },
   emoji: { fontSize: 60, marginBottom: SIZES.lg, textAlign: 'center' },
   title: { fontSize: 26, fontWeight: 'bold', color: COLORS.text, textAlign: 'center', marginBottom: 8 },

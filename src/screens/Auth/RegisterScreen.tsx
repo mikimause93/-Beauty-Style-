@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -18,93 +18,127 @@ export function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
 
   const handleRegister = async () => {
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please fill in all fields');
+    if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+      Alert.alert('Errore', 'Compila tutti i campi');
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert('Errore', 'Le password non coincidono');
       return;
     }
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      Alert.alert('Errore', 'La password deve essere di almeno 6 caratteri');
       return;
     }
     setLoading(true);
-    const success = await register(name.trim(), email.trim(), password);
+    const result = await register(name.trim(), email.trim(), password);
     setLoading(false);
-    if (!success) {
-      Alert.alert('Registration Failed', 'Please try again');
+    if (!result.success) {
+      Alert.alert('Registrazione fallita', result.error ?? 'Riprova');
     }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={styles.root}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <LinearGradient colors={[COLORS.secondary, COLORS.primary]} style={styles.header}>
           <Text style={styles.logo}>✨</Text>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join the beauty community</Text>
+          <Text style={styles.title}>Crea Account</Text>
+          <Text style={styles.subtitle}>Unisciti alla community beauty</Text>
         </LinearGradient>
 
         <View style={styles.form}>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>Nome completo</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Your full name"
+              placeholder="Il tuo nome"
               placeholderTextColor={COLORS.gray}
               autoCapitalize="words"
               autoComplete="name"
+              returnKeyType="next"
+              onSubmitEditing={() => emailRef.current?.focus()}
+              blurOnSubmit={false}
             />
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email Address</Text>
+            <Text style={styles.label}>Indirizzo email</Text>
             <TextInput
+              ref={emailRef}
               style={styles.input}
               value={email}
               onChangeText={setEmail}
-              placeholder="your@email.com"
+              placeholder="tua@email.com"
               placeholderTextColor={COLORS.gray}
               keyboardType="email-address"
               autoCapitalize="none"
               autoComplete="email"
+              returnKeyType="next"
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              blurOnSubmit={false}
             />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Min. 6 characters"
-              placeholderTextColor={COLORS.gray}
-              secureTextEntry
-              autoComplete="new-password"
-            />
+            <View style={styles.passwordContainer}>
+              <TextInput
+                ref={passwordRef}
+                style={[styles.input, styles.passwordInput]}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Min. 6 caratteri"
+                placeholderTextColor={COLORS.gray}
+                secureTextEntry={!showPassword}
+                autoComplete="new-password"
+                returnKeyType="next"
+                onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                blurOnSubmit={false}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
+                <Text style={{ fontSize: 18 }}>{showPassword ? '🙈' : '👁️'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              style={styles.input}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              placeholder="Repeat password"
-              placeholderTextColor={COLORS.gray}
-              secureTextEntry
-              autoComplete="new-password"
-            />
+            <Text style={styles.label}>Conferma password</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                ref={confirmPasswordRef}
+                style={[styles.input, styles.passwordInput]}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                placeholder="Ripeti la password"
+                placeholderTextColor={COLORS.gray}
+                secureTextEntry={!showConfirmPassword}
+                autoComplete="new-password"
+                returnKeyType="done"
+                onSubmitEditing={handleRegister}
+              />
+              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeButton}>
+                <Text style={{ fontSize: 18 }}>{showConfirmPassword ? '🙈' : '👁️'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <Button title="Create Account" onPress={handleRegister} loading={loading} style={styles.button} />
+          <Button title="Crea Account" onPress={handleRegister} loading={loading} style={styles.button} />
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.loginButton}>
             <Text style={styles.loginText}>
-              {'Already have an account? '}<Text style={styles.loginLink}>Sign In</Text>
+              {'Hai già un account? '}<Text style={styles.loginLink}>Accedi</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -138,6 +172,17 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     backgroundColor: COLORS.background,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: COLORS.lightGray,
+    borderRadius: SIZES.borderRadius,
+    backgroundColor: COLORS.background,
+    paddingHorizontal: SIZES.md,
+  },
+  passwordInput: { flex: 1, borderWidth: 0 },
+  eyeButton: { padding: 8 },
   button: { marginTop: SIZES.sm, marginBottom: SIZES.lg },
   loginButton: { alignItems: 'center' },
   loginText: { fontSize: 16, color: COLORS.textSecondary },

@@ -47,7 +47,10 @@ export default function App() {
         ]);
         setInitialAuthState({
           isLoggedIn: !!userJson,
-          hasCompletedOnboarding: onboarding === 'true',
+          // A persisted user can only exist after onboarding was completed.
+          // Guard against a partial AsyncStorage clear that removes only the
+          // onboardingComplete key while leaving the user record intact.
+          hasCompletedOnboarding: onboarding === 'true' || !!userJson,
           user: userJson ? (JSON.parse(userJson) as User) : null,
         });
       } catch (e) {
